@@ -34,8 +34,8 @@ MSA5기 더조은아카데미 Oracle, MySQL 실습
 ## MSA_JSP
 MSA5기 더조은아카데미 JSP/servlet 실습
 
-## MSA5_SPRINGBOOT
-더조은아카데미 스프링부트 실습
+## MSA_SPRING
+더조은아카데미 SpringFramework, SpringBoot 실습
 
 - Spring Boot 3.x.x
 - Spring Boot 2.7.x
