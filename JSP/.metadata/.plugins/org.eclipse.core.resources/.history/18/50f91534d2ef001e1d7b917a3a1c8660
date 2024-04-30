@@ -1,0 +1,9 @@
+package shop.DTO;
+
+public class persistentLogins {
+	private int pNo;
+	private String userId;
+	private String token;
+	private Date regDate;
+	private Date updDate;
+}

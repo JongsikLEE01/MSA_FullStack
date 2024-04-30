@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>등록</title>
+</head>
+<body>
+    <h1>등록</h1>
+    <h3>/board/insert</h3>
+
+    <form method="post" action="/board/insert">
+        <table border="1">
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="title" id="title"></td>
+            </tr>
+            <tr>
+                <td>작성자</td>
+                <td><input type="text" name="writer" id="writer"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea type="text" name="content" id="content" cols="40" rows="5"></textarea>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="등록">
+    </form>
+</body>
+</html>

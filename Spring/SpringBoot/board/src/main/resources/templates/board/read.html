@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조회</title>
+</head>
+<body>
+    <h1>조회</h1>
+    <h3>/board/read</h3>
+
+    <form action="/board/delete" method="post">
+        <input type="hidden" name="no" th:value="${board.no}">
+        <table border="1">
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="title" th:value="${board.title}"></td>
+            </tr>
+            <tr>
+                <td>작성자</td>
+                <td><input type="text" name="title" th:value="${board.writer}"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea name="content" id="content" cols="40" rows="5" th:text="${board.content}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>파일</td>
+                <td>
+                    <ul>
+                        <!-- 파일 목록 -->
+                        <th:block th:each="file : ${fileList}">
+                            <li>
+                                <!-- 파일명 -->
+                                <a th:href="|/file/${file.no}|" th:text="${file.originName}"></a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <button type="button" onclick="moveUpdate()">수정</button>
+            <button type="button" onclick="moveList()">목록</button>
+        </div>
+    </form>
+
+    <script>
+        // 모델 객체를 자바스크립트로 가져오는 방법
+        let no = "[[${board.no}]]"
+
+        // 수정화면 이동
+        function moveUpdate(){
+            location.href = "/board/update?no=" + no
+        }
+
+        // 목록 이동
+        function moveList(){
+            location.href = "/board/list"
+        }
+    </script>
+</body>
+</html>

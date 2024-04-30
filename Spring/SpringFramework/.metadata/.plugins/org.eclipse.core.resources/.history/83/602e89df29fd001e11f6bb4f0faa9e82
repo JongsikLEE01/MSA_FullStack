@@ -1,0 +1,15 @@
+package com.jslee.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * 컨트롤러 응답
+ * @author
+ *
+ */
+@Controller
+@RequestMapping("/response")
+public class ResponseController {
+	
+}

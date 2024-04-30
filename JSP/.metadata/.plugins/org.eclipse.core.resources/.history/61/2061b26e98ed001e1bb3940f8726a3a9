@@ -1,0 +1,7 @@
+package shop.Service;
+
+public interface UserService {
+	public int join(Users user) {
+		
+	}
+}

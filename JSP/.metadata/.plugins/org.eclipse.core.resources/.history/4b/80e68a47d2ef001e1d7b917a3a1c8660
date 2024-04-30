@@ -1,0 +1,11 @@
+package shop.DTO;
+
+import java.util.Date;
+
+public class persistentLogins {
+	private int pNo;
+	private String userId;
+	private String token;
+	private Date regDate;
+	private Date updDate;
+}

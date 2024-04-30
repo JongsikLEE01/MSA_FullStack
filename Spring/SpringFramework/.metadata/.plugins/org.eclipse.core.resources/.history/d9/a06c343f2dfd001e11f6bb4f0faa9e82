@@ -1,0 +1,6 @@
+package com.jslee.spring.dto;
+
+public class Board {
+	private String writer;
+	private String content;
+}

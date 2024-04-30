@@ -1,0 +1,177 @@
+package shop.DAO;
+
+import java.sql.SQLException;
+import java.util.UUID;
+
+import shop.DTO.Users;
+import shop.DTO.persistentLogins;
+
+public class UserDAO extends JDBConnection {
+
+	/**
+	 * 회원 가입
+	 * @param user
+	 * @return
+	 */
+	public int join(Users user) {
+		int result = 0;		// 결과 : 적용된 데이터 건수
+		
+		String sql = " INSERT INTO users (id, password, name, gender, birth, mail, join_date, reg_date, upd_date) "
+				   + " VALUES(?, ?, ?, ?, ?, ?, sysdate, sysdate, sysdate) ";
+		
+		try {
+			psmt = con.prepareStatement(sql);			// 쿼리 실행 객체 생성
+			psmt.setString( 1, user.getId() );		
+			psmt.setString( 2, user.getPassword() );		
+			psmt.setString( 3, user.getName() );		
+			psmt.setString( 4, user.getGender() );		
+			psmt.setString( 5, user.getBirth() );		
+			psmt.setString( 6, user.getMail() );		
+			result = psmt.executeUpdate();		// SQL 실행 요청, 적용된 데이터 개수를 받아온다.
+												// 게시글 1개 적용 성공 시, result : 1
+												// 				실패 시, result : 0
+			// executeUpdate()
+			// : SQL (INSERT, UPDATE, DELETE)을 실행하고 적용된 데이터 개수를 int 타입으로 반환
+		} catch (SQLException e) {
+			System.err.println("회원 등록 시, 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 로그인
+	 * @param user
+	 * @return
+	 */
+	public Users login(Users user) {
+		String sql = " select * from Users where id=? and password = ? ";		// sql작성
+		
+		try {
+			psmt = con.prepareStatement(sql);		// 쿼리 실행 객체 생성 -	prepareStatement(psmt
+			
+			// psmt.setXXX(순서번호, 매핑값)
+			psmt.setString(1, user.getId());	// ?(1) <-- no글번호
+			psmt.setString(2, user.getPassword());	// ?(1) <-- no글번호
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {		// next() : 실행 결과의 다음 데이터로 이동
+				// rs.getXXX("컬렴명") --> 해당 컬럼의 데이터를 가져온다(컬럼명의 값을 특정 데이터 타입으로 반환)
+				user.setId(rs.getString("id"));	// 결과 데이터 가져오기
+				user.setPassword(rs.getString("password"));	// 결과 데이터 가져오기
+				user.setName(rs.getString("name"));	// 결과 데이터 가져오기
+				user.setGender(rs.getString("gender"));	// 결과 데이터 가져오기
+				user.setBirth(rs.getString("birth"));	// 결과 데이터 가져오기
+				user.setMail(rs.getString("mail"));	// 결과 데이터 가져오기
+				user.setJoinDate(rs.getDate("join_date"));	// 결과 데이터 가져오기
+				user.setRegDate(rs.getDate("reg_date"));	// 결과 데이터 가져오기
+				user.setUpdDate(rs.getDate("upd_date"));	// 결과 데이터 가져오기
+				return user;
+			}
+			return null;
+		} catch (SQLException e) {
+			System.err.println("게시글 조회 시, 예외 발생");
+		}
+		return null;	// 게시글 정보 1건 반환
+	}
+	
+	/**
+	 * 토근 생성
+	 * @param userId
+	 * @return
+	 */
+	public String insertToken(String userId) {
+		int result = 0;
+		String sql = " INSERT INTO persistent_logins (p_no, user_id, token) VALUES ( SEQ_PER_LOGIN.nextval , ?, ? ) ";
+		
+		// 토큰 발생
+		String token = UUID.randomUUID().toString();
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, userId);
+			psmt.setString(2, token);
+			
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("자동 로그인 정보 등록중 에러 발생...");
+			e.printStackTrace();
+		}
+		System.out.println("자동 로그인 정보" + result + " 개 등록...");
+		
+		return token;
+	}
+	
+	// 토큰 조회
+	/**
+	 * - userId로 조회
+	 * @param userId
+	 * @return
+	 */
+	public persistentLogins selectToken(String userId) {
+		String sql = " select * from persistent_logins where user_id = ? ";
+		
+		persistentLogins persistentLogins = null;
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, userId);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()){
+				persistentLogins = new persistentLogins();
+				persistentLogins.setpNo(rs.getInt("pno"));
+				persistentLogins.setUserId(rs.getString("user_id"));
+				persistentLogins.setToken(rs.getString("token"));
+				persistentLogins.setRegDate(rs.getDate("reg_date"));
+				persistentLogins.setUpdDate(rs.getDate("upd_date"));
+			}
+			rs.close();
+		}catch (Exception e) {
+			System.out.println("자동 로그인 정보 조회 중 에러 발생...");
+			e.printStackTrace();
+		}
+		return persistentLogins;
+	}
+	
+	/**
+	 * - token로 조회
+	 * @param token
+	 * @return
+	 */
+	public persistentLogins selectTokenByToken(String token) {
+		String sql = " select * from persistent_logins where token = ? ";
+		
+		persistentLogins persistentLogins = null;
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, token);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()){
+				persistentLogins = new persistentLogins();
+				persistentLogins.setpNo(rs.getInt("pno"));
+				persistentLogins.setUserId(rs.getString("user_id"));
+				persistentLogins.setToken(rs.getString("token"));
+				persistentLogins.setRegDate(rs.getDate("reg_date"));
+				persistentLogins.setUpdDate(rs.getDate("upd_date"));
+			}
+			rs.close();
+		}catch (Exception e) {
+			System.out.println("자동 로그인 정보 조회 중 에러 발생...");
+			e.printStackTrace();
+		}
+		return persistentLogins;
+	}
+	
+	/**  토큰 삭제
+	 * - 로그아웃시 자동 로그인 해제
+	 * @param userId
+	 * @return
+	 */
+	public int deleteToken(String userId) {
+		
+	}
+}

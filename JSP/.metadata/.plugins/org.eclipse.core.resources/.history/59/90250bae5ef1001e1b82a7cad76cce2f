@@ -1,0 +1,20 @@
+package Calendar.DTO;
+
+import java.util.Date;
+
+public class Calendar {
+	private int no;
+	private Date strDate;
+	private Date updDate;
+	private String content;
+	
+	public Calendar() {
+		
+	}
+	
+	public Calendar(Date strDate, Date updDate, String content) {
+		this.title = title;
+		this.userId = userId;
+		this.content = content;
+	}
+}

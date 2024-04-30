@@ -1,0 +1,13 @@
+table{ 
+	background-color: white;
+}
+	
+tr{
+	height: 40px;
+	width: 40px;
+}
+td{
+	width: 40px;
+	text-align: center;
+	font-size: 15pt;
+}

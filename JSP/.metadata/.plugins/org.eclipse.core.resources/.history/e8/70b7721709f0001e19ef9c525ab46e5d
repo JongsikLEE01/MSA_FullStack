@@ -1,0 +1,19 @@
+<%@page import="shop.Service.BoardServiceImpl"%>
+<%@page import="shop.Service.BoardService"%>
+<%@page import="shop.DTO.Board"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	String title = request.getParameter("title");
+	String userId = request.getParameter("userId");
+	String content = request.getParameter("content");
+	
+	Board board = new Board(title, userId, content);
+	
+	BoardService boardService = new BoardServiceImpl();
+	boardService.insert(board);
+%>

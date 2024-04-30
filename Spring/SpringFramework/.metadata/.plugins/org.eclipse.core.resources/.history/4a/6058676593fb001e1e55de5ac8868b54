@@ -1,0 +1,10 @@
+package com.jslee.spring.service;
+
+public class BServiceImpl implements MyService{
+
+	@Override
+	public void test() {
+		System.out.println("BserviceImple...");
+	}
+
+}

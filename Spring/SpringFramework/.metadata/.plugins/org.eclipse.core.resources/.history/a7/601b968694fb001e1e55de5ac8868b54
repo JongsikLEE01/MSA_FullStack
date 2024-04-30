@@ -1,0 +1,8 @@
+package com.jslee.spring.service;
+
+import org.springframework.stereotype.Service;
+
+@Service("C")
+public class CServiceImpl {
+
+}

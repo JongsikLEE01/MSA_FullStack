@@ -1,0 +1,29 @@
+<%@page import="Calendar.Service.CalendarServiceImpl"%>
+<%@page import="Calendar.Service.CalendarService"%>
+<%@page import="Calendar.DTO.Calendar"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%	
+	String time = "00:00:00";
+	Date strDate = request.getParameter("strDate"+time);
+	Date endDate = request.getParameter("strDate"+time);
+	String content = request.getParameter("content");
+	
+	Calendar cal = new Calendar(strDate, strDate, content);
+	
+	CalendarService calendarService = new CalendarServiceImpl();
+	int result = calendarService.insert(cal);
+	
+	String root = request.getContextPath();
+	if(result > 0){
+		// 등록 성공
+		response.sendRedirect(root + "/schedule/schedule.jsp");
+	}else{
+		// 등록 실패
+		response.sendRedirect(root + "/schedule/schedule_insert.jsp?msg=0");
+	}
+%>

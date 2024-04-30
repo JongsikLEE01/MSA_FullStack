@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Board.java&apos; to &apos;spring-DI4/src/main/java/com.jslee.spring.dto&apos;&#x0D;&#x0A;- Original project: &apos;spring-DI3&apos;&#x0D;&#x0A;- Destination element: &apos;spring-DI4/src/main/java/com.jslee.spring.dto&apos;&#x0D;&#x0A;- Original element: &apos;com.jslee.spring.dto.Board.java&apos;" description="Copy compilation unit" destination="=spring-DI4/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.jslee.spring.dto" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.jslee.spring.dto{Board.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1713235865999" units="1" version="1.0"/>
+</session>

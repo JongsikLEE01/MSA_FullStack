@@ -1,0 +1,13 @@
+package com.jslee.spring;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class BeanController {
+	@RequestMapping(value = "/bean", method = RequsetMethod.GET)
+	public String bean() {
+		
+		return "bean";
+	}
+}

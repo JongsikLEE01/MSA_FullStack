@@ -1,0 +1,40 @@
+package filter;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+
+import shop.Service.UserService;
+import shop.Service.UserServiceImpl;
+
+public class LoginFilter implements Filter{
+
+	Cookie[] cookies;
+	UserService userService;
+	
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		userService  = new UserServiceImpl();
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		// request 객체로부터 자동 로그인 쿠키 확인
+		
+		// 자동 로그인 쿠기가 검증되면, 로그인 처리
+		
+	}
+
+	@Override
+	public void destroy() {
+		
+	}
+	
+}

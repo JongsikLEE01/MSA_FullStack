@@ -1,0 +1,21 @@
+package shop.DTO;
+
+import java.util.Date;
+
+public class Board {
+	private int no;
+	private String title;
+	private String userId;
+	private String content;
+	private Date regDate;
+	private Date updDate;
+	
+	public Board() {
+		
+	}
+	
+	public Board(String title, String userId, String content) {
+		this.title = title;
+		this.
+	}
+}

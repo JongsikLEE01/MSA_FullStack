@@ -1,0 +1,20 @@
+package Board.Controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import Board.dto.Board;
+import Board.service.BoardService;
+import Board.service.BoardServiceImpl;
+
+public class BoardDeleteController {
+	private BoardService boardService = new BoardServiceImpl();
+	
+	public String process(HttpServletRequest request) throws Exception{
+		List<Board> boardList = boardService.delete();
+		request.setAttribute("boardList", boardList);
+		String view = "/board/deletepro.jsp";
+		return view;
+	}
+}

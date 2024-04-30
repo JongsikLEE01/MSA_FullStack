@@ -1,0 +1,21 @@
+package shop.Service;
+
+import shop.DAO.UserDAO;
+import shop.DTO.Users;
+
+public class UserServiceImpl implements UserService{
+
+	private UserDAO userDAO = new UserDAO();
+	
+	@Override
+	public int join(Users user) {
+		int result = userDAO.join(user);
+		
+		if(result > 0) {
+			
+		}
+		
+		return 0;
+	}
+
+}

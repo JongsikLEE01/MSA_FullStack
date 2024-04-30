@@ -1,0 +1,13 @@
+table{ 
+	background-color: #F2F2F2;
+}
+	
+tr{
+	height: 60px;
+}
+td{
+	width: 100px; text-align: right; font-size: 15pt; font-family: D2coding;
+}
+/* 타이틀 스타일 */
+th#title {font-size: 20pt; font-weight: bold; color: #FFBF00; font-family: D2coding; }
+

@@ -1,0 +1,14 @@
+package Board.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import Board.service.BoardService;
+import Board.service.BoardServiceImpl;
+
+public class BoardListController {
+	private BoardService boardService = new BoardServiceImpl();
+	
+	public String process(HttpServletRequest request) throws Exception{
+		
+	}
+}

@@ -1,0 +1,10 @@
+package com.jslee.spring.config;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class config {
+	public Board getBoard() {
+		return new Board("제목 있음", "작성자 있음", "내용 있음");
+	}
+}

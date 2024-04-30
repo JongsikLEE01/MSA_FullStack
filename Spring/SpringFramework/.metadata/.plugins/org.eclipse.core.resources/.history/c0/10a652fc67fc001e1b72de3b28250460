@@ -1,0 +1,16 @@
+package Board.Controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import Board.dto.Board;
+import Board.service.BoardService;
+import Board.service.BoardServiceImpl;
+
+public class BoardInsertController {
+	public String process(HttpServletRequest request) throws Exception{
+		String view = "/board/insert.jsp";
+		return view;
+	}
+}

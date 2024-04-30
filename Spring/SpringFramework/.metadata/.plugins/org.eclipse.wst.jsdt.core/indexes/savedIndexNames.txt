@@ -1,0 +1,13 @@
+INDEX VERSION 1.4+C:\JSLEE\SpringFramework\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2800328264.index
+2381742319.index
+1084226238.index
+3026487629.index
+2067454389.index
+145002494.index
+3435399187.index
+3522080478.index
+948767723.index
+3629309203.index
+3271193799.index
+499776667.index

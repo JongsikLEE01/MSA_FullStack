@@ -1,0 +1,38 @@
+package com.jslee.spring.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+// 컨트롤러 응답
+@Controller
+@RequestMapping("/response")
+public class ResponseController {
+	private static final Logger logger = LoggerFactory.getLogger(ResponseController.class);
+	
+	/**
+	 * 요청 경로 : /response/index
+	 * 응답 	   : /reponse/index.jsp 
+	 */
+	@RequestMapping("/index")
+	public void response(Model model) {
+		logger.info("void 타입 - /response/index");
+		logger.info("/response/index.jsp 뷰를 응답");
+		model.addAttribute("message","error");
+	}
+	
+	/**
+	 * 요청 경로 : /response/view
+	 * 응답 	   : /reponse/index.jsp 
+	 * @return
+	 */
+	@RequestMapping("/view")
+	public String responseView() {
+		logger.info("String 타입 - /response/index");
+		logger.info("/response/index.jsp 뷰를 응답");
+		logger.info("view 이름을 반환값으로 지정");
+		return "response/index";
+	}
+}

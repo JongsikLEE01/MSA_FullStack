@@ -1,0 +1,13 @@
+package com.jslee.spring.controller;
+
+import org.springframework.stereotype.Controller;
+
+/**
+ * 
+ * @author tj-bu-708-pc17
+ *
+ */
+@Controller
+public class ModelController {
+
+}

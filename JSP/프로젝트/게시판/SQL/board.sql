@@ -1,0 +1,25 @@
+-- 게시판 테이블
+CREATE TABLE board(
+    no       NUMBER                 NOT NULL PRIMARY KEY,
+    title    VARCHAR2(200)          NOT NULL,
+    user_id   VARCHAR2(40)           NOT NULL,
+    content  VARCHAR2(2000)         NOT NULL,
+    reg_date DATE DEFAULT SYSDATE   NOT NULL,
+    upd_date DATE DEFAULT SYSDATE   NOT NULL
+);
+
+SELECT * FROM BOARD;
+
+DROP TABLE BOARD;
+
+-- 시퀀스
+CREATE SEQUENCE SEQ_BOARD
+INCREMENT BY 1
+START WITH 1
+MAXVALUE 9999
+MINVALUE 1;
+
+INSERT INTO BOARD(NO, TITLE, USER_ID, CONTENT)
+VALUES (SEQ_BOARD.NEXTVAL, '첫번째 게시글', 'JOEUN', '게시글 내용');
+-- 데이터를 임의로 추가 수정 삭제 후에는 COMMIT를 해야함
+COMMIT;

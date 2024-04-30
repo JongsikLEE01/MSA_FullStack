@@ -1,0 +1,74 @@
+package Calendar.DTO;
+
+import java.util.Date;
+
+public class Calendar {
+	private int no;
+	private Date strDate;
+	private Date updDate;
+	private String content;
+	
+	public Calendar() {
+		
+	}
+	
+	public Calendar(String title, String userId, String content) {
+		this.title = title;
+		this.userId = userId;
+		this.content = content;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Date getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
+	}
+
+	public Date getUpdDate() {
+		return updDate;
+	}
+
+	public void setUpdDate(Date updDate) {
+		this.updDate = updDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Board [no=" + no + ", title=" + title + ", userId=" + userId + ", content=" + content + ", regDate="
+				+ regDate + ", updDate=" + updDate + "]";
+	}
+}

@@ -1,0 +1,84 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringRequestApplication<spring-request>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.springrequest.SpringRequestApplication",
+            "projectName": "spring-request",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringNoteApplication<spring-note>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.springnote.SpringNoteApplication",
+            "projectName": "spring-note",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringRestApplication<spring-rest>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.springrest.SpringRestApplication",
+            "projectName": "spring-rest",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-LayoutApplication<layout>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.layout.LayoutApplication",
+            "projectName": "layout",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringMybatisApplication<spring-mybatis>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.springmybatis.SpringMybatisApplication",
+            "projectName": "spring-mybatis",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringMybatisApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.springmybatis.SpringMybatisApplication",
+            "projectName": "board",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringMybatisApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.board.SpringMybatisApplication",
+            "projectName": "board",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BoardApplication<board>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jslee.board.BoardApplication",
+            "projectName": "board",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

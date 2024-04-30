@@ -1,0 +1,18 @@
+package com.aloha.spring.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.aloha.spring.dto.Board;
+
+public class BoardDAO {
+
+	public List<Board> list() {
+		List<Board> boardList = new ArrayList<Board>();
+		
+		boardList.add(new Board("집","가고","싶다"));
+		boardList.add(new Board("집","갈래","나"));
+		boardList.add(new Board("집","언제","가"));
+		return null;
+	}
+}

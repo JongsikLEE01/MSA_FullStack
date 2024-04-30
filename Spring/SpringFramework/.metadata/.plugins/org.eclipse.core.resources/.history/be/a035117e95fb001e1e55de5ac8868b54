@@ -1,0 +1,11 @@
+package com.jslee.spring.service;
+
+import org.springframework.stereotype.Service;
+
+import com.jslee.spring.dao.BoardDAO;
+
+@Service
+public class BoardServiceImpl implements BoardService{
+	
+	private BoardDAO boardDAO;
+}

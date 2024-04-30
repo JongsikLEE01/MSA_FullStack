@@ -1,0 +1,15 @@
+package Calendar.DTO;
+
+import java.util.Date;
+
+public class Calendar {
+	private int no;
+	private Date strDate;
+	private Date endDate;
+	private String content;
+	
+	public Calendar() {
+		
+	}
+	
+}

@@ -1,0 +1,15 @@
+package shop.Service;
+
+import shop.DTO.Users;
+
+public class UserServiceImpl implements UserService{
+
+	private UserDAO userDAO = new UserDAO();
+	
+	@Override
+	public int join(Users user) {
+		
+		return 0;
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.jslee.spring.mapper;
+
+public interface BoardMapper {
+
+}

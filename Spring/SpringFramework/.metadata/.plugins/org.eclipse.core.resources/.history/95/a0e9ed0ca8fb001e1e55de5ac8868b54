@@ -1,0 +1,22 @@
+package com.jslee.spring;
+
+public class Snippet {
+	@Around("execution(* com.joeun.test.service.BoardService*.*(..))")
+	public void aroundLog(ProceedingJoinPoint jp) {
+		logger.info("===========================================");
+		logger.info("Service - @Around");
+		LocalDateTime time = LocalDateTime.now();
+		logger.info("현재 시간 : " + time);
+		
+		try {
+			Object result = jp.proceed();
+		} catch (Throwable e) {
+			logger.error("예외가 발생했습니다.");
+			e.printStackTrace();
+		}
+		
+		// After, Around 를 함께 사용하려면, Around 어드바이스  에서 After 어드바이스를 호출해준다.
+		endLog(jp);
+	}
+}
+

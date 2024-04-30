@@ -1,0 +1,11 @@
+package com.aloha.spring.dto;
+
+public class Board {
+	private String tilte;
+	private String writer;
+	private String content;
+	
+	public Board(String title, String writer, String Content) {
+		
+	}
+}

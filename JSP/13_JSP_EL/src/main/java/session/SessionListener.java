@@ -1,0 +1,49 @@
+package session;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
+
+// 사용자 세션에 대한 행위를 인식하는 클래스
+// 서블릿 3.0 이상이면 어노테이션으로 리스너를 등록 가능
+// 서블릿 3.0 미만이면 web.xml에 설정
+@WebListener
+public class SessionListener implements HttpSessionListener{
+
+	// 세션이 생성될 때 실행
+	@Override
+	public void sessionCreated(HttpSessionEvent se) {
+		System.out.println("세션 생성...");
+		
+		se.getSession().setMaxInactiveInterval(30);  //  유효시간 30초
+		
+		ServletContext application = se.getSession().getServletContext();
+		AtomicInteger visitrionCount = (AtomicInteger) application.getAttribute("visitrionCount");
+		if(visitrionCount == null){
+			visitrionCount = new AtomicInteger(0);
+			application.setAttribute("visitrionCount", visitrionCount);	
+		}
+		// 세션 생성시 접속자 수 1 증가
+		int currentCount = visitrionCount.incrementAndGet();
+		System.out.println("현재 접속자 수? "+currentCount);
+	}
+
+	// 세션이 종료될 때 실행
+	@Override
+	public void sessionDestroyed(HttpSessionEvent se) {
+		// 세션 종료시 application 객체에서 접속자 수를 감소
+		ServletContext application = se.getSession().getServletContext();
+		AtomicInteger visitorCount = (AtomicInteger) application.getAttribute("visitorCount");
+		int count = 0;
+		if(visitorCount != null) {
+			count = visitorCount.decrementAndGet();
+			System.out.println("접속자 수 -1");
+		}
+		// 감소된 접속자 수로 재설정
+		application.setAttribute("visitorCount", count);
+		System.out.println("접속자 수? "+ count);
+	}
+}

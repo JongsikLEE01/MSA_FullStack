@@ -1,0 +1,6 @@
+package com.jslee.spring;
+
+public class Snippet {
+	<constructor-arg ref="boardDAO">
+}
+

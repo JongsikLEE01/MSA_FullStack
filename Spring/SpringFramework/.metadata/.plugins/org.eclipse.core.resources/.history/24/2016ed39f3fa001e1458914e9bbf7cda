@@ -1,0 +1,20 @@
+package com.aloha.spring.dto;
+
+public class Board {
+	private String tilte;
+	private String writer;
+	private String content;
+	
+	public Board(String title, String writer, String content) {
+		this.tilte = title;
+		this.writer = writer;
+		this.content = content;
+		
+		
+	}
+	
+	@Override
+	public String toString() {
+		return "Board [tilte=" + tilte + ", writer=" + writer + ", content=" + content + "]";
+	}
+}

@@ -1,0 +1,10 @@
+table{ 
+	background-color: #F2F2F2;
+}
+	
+tr{
+	height: 60px;
+}
+td{
+	width: 100px; text-align: right; font-size: 15pt; font-family: D2coding;
+}

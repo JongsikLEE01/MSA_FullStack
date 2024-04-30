@@ -1,0 +1,27 @@
+package com.jslee.spring.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.jslee.spring.dto.Board;
+
+// DAO 역할을 하는 빈으로 등록
+@Repository
+public class BoardDAO {
+	public BoardDAO() { }
+	
+	// 게시글 조회
+	public List<Board> list() {
+		
+		List<Board> boardList = new ArrayList<Board>();
+		
+		boardList.add( new Board("1", "111", "111") );
+		boardList.add( new Board("2", "222", "222") );
+		boardList.add( new Board("3", "333", "333") );
+		
+		System.out.println("BoardDAO 실행됨...");
+		return boardList;
+	}
+}

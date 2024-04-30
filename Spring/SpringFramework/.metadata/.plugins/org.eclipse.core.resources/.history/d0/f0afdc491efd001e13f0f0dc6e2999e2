@@ -1,0 +1,23 @@
+package com.jslee.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class ModelController {
+	/**
+	 * 요청 경로 : /model/person2?name=김조은&age=20
+	 * 			* 요청 파라미터의 변수명들을 객체의 필드(멤버변수)로 자동으로 매핑해준다.
+	 * @param person
+	 * @return
+	 */
+	@RequestMapping("/person2")
+	public String person2(@ModelAttribute Person person) {
+		// @ModelAttribute : 매개변수를 모델에 자동으로 등록해주는 어노테이션
+		
+		// model.addAttribute("person", person);
+		
+		return "model/person";				// view : model/person.jsp
+	}
+}

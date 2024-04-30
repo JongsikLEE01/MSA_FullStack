@@ -1,0 +1,9 @@
+package controller;
+
+import java.util.Map;
+
+public class ModelView {
+	Map<String, Object> model;
+	
+	
+}

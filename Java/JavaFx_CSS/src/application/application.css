@@ -1,0 +1,26 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.root{
+	-fx-background-color: green;
+}
+
+/* Label 노드를 선택해 스타일 지정 */
+.label{
+	-fx-font-size: 20;
+	-fx-font-family: "Consolas";
+	-fx-text-fill: "black";
+	-fx-alignment: center;
+}
+
+/* fx:id로 요소를 선택해 스타일 지정 */
+#TitleLabel{
+	-fx-font-size: 60;
+	-fx-text-fill: "red";
+}
+
+/* styleClass="custom" 요소를 선택해 스타일을 지정 */
+.custom:hover{
+	-fx-opacity: none;
+}
+.custom{
+	-fx-background-color: white;
+}

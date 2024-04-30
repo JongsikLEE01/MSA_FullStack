@@ -1,0 +1,48 @@
+<%@page import="java.util.Calendar"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%
+	request.setCharacterEncoding("utf-8");
+
+	Calendar cal = Calendar.getInstance();
+	
+	// 시스템 오늘날짜
+	int ty = cal.get(Calendar.YEAR);
+	int tm = cal.get(Calendar.MONTH)+1;
+	int td = cal.get(Calendar.DATE);
+	
+	int year = cal.get(Calendar.YEAR);
+	int month = cal.get(Calendar.MONTH)+1;
+	
+	// 파라미터 받기
+	String sy = request.getParameter("year");
+	String sm = request.getParameter("month");
+	
+	if(sy!=null) { // 넘어온 파라미터가 있으면
+		year = Integer.parseInt(sy);
+	}
+	if(sm!=null) {
+		month = Integer.parseInt(sm);
+	}
+	
+	cal.set(year, month-1, 1);
+	year = cal.get(Calendar.YEAR);
+	month = cal.get(Calendar.MONTH)+1;
+	
+	int week = cal.get(Calendar.DAY_OF_WEEK); // 1(일)~7(토)
+%>
+출처: https://heidong.tistory.com/130 [풀스택 개발자:티스토리]
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+package com.jslee.spring.dto;
+
+import lombok.Data;
+import lombok.Getter;
+
+@Data
+@Getter
+public class Person {
+	private String name;
+	private int age;
+}

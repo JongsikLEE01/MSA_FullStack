@@ -1,0 +1,13 @@
+package shop.Service;
+
+import shop.DTO.Users;
+
+public class UserServiceImpl implements UserService{
+
+	@Override
+	public int join(Users user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}
