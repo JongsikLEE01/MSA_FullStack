@@ -1,0 +1,496 @@
+-- Active: 1709542531603@@127.0.0.1@1521@orcl@SYSTEM
+SET SERVEROUTPUT ON;
+
+DECLARE
+    VI_NUM NUMBER;
+BEGIN
+    VI_NUM := 100;
+    DBMS_OUTPUT.PUT_LINE('1234');
+    -- DBMS_OUTPUT.PUT_LINE(VI_NUM);
+    /* 
+        DD
+        DDDD
+    */
+END;
+/
+
+DECLARE
+    -- 변수 선언
+    -- VS_EMP_NAME VARCHAR(100);
+    -- VS_DEPT_NAME VARCHAR(100);
+    -- 데이터타입 참조형 : 테이블명.컬럼명%TYPE
+    VS_EMP_NAME EMPLOYEE.EMP_NAME%TYPE;
+    VS_DEPT_NAME DEPARTMENT.DEPT_TITLE%TYPE;
+BEGIN
+    SELECT E.EMP_NAME, D.DEPT_TITLE
+    INTO VS_EMP_NAME, VS_DEPT_NAME
+    FROM EMPLOYEE E, DEPARTMENT D
+    WHERE E.DEPT_CODE = D.DEPT_ID
+    AND E.EMP_ID = 200;
+    DBMS_OUTPUT.PUT_LINE(VS_EMP_NAME || ' : ' || VS_DEPT_NAME);
+END;
+/
+
+DECLARE
+    VI_NUM NUMBER;
+    CO_NUM CONSTANT NUMBER := 200;
+BEGIN
+    VI_NUM := 100;
+    VI_NUM := 1000;
+    DBMS_OUTPUT.PUT_LINE('변수: '||VI_NUM);
+    DBMS_OUTPUT.PUT_LINE('상수: '||CO_NUM);
+    -- DBMS_OUTPUT.PUT_LINE(VI_NUM);
+    /* 
+        DD
+        DDDD
+    */
+END;
+/
+
+-- IF
+DECLARE
+    VN_NUM1 NUMBER := 10;
+    VN_NUM2 NUMBER := 20;
+BEGIN
+    IF VN_NUM1 > VN_NUM2 THEN 
+        DBMS_OUTPUT.PUT_LINE(VN_NUM1 || '이 더 큽니다');
+    ELSE 
+        DBMS_OUTPUT.PUT_LINE(VN_NUM2 || '이 더 큽니다');
+    END IF;
+END;
+/
+
+-- IF~ELSEIF
+-- 사원들 중 부서가 'D1'에서 급여가 가장 많은 사원의 급여를 조회
+-- 조회하여 1,000,000원 이상 2,000,000 이하면 1을 출력
+-- 2,000,001이상 3,000,000 이하면 2를 출력
+-- 아닐 경우 3을 출력
+DECLARE
+    VN_DEPT_CODE DEPARTMENT.DEPT_ID%TYPE := 'D1';
+    MAX_SALARY NUMBER := 0;
+BEGIN
+    SELECT MAX(SALARY)
+    INTO MAX_SALARY
+    FROM EMPLOYEE
+    WHERE DEPT_CODE = VN_DEPT_CODE;
+
+    DBMS_OUTPUT.PUT_LINE(MAX_SALARY);
+
+    IF MAX_SALARY BETWEEN 1000000 AND 2000000
+    THEN DBMS_OUTPUT.PUT_LINE('1');
+    ELSIF MAX_SALARY BETWEEN 2000001 AND 3000000
+    THEN DBMS_OUTPUT.PUT_LINE('2');
+    ELSE DBMS_OUTPUT.PUT_LINE('3');
+    END IF;
+END;
+/
+
+-- CASE
+DECLARE
+    VN_DEPT_CODE DEPARTMENT.DEPT_ID%TYPE := 'D1';
+    MAX_SALARY NUMBER := 0;
+BEGIN
+    SELECT MAX(SALARY)
+    INTO MAX_SALARY
+    FROM EMPLOYEE
+    WHERE DEPT_CODE = VN_DEPT_CODE;
+
+    DBMS_OUTPUT.PUT_LINE(MAX_SALARY);
+
+    CASE WHEN MAX_SALARY BETWEEN 1000000 AND 2000000
+            THEN DBMS_OUTPUT.PUT_LINE('1');
+        WHEN MAX_SALARY BETWEEN 2000001 AND 3000000
+            THEN DBMS_OUTPUT.PUT_LINE('2');
+        ELSE DBMS_OUTPUT.PUT_LINE('3');
+    END CASE;
+END;
+/
+
+-- 반복문
+-- LOOP
+DECLARE
+    BASE_NUM NUMBER := 3;
+    CNT NUMBER := 1;
+BEGIN
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(BASE_NUM || '*' || CNT || '=' || BASE_NUM*CNT);
+        CNT := CNT+1;
+        EXIT WHEN CNT > 9;
+    END LOOP;
+END;
+/
+
+-- WHILE LOOP
+DECLARE
+    BASE_NUM NUMBER := 4;
+    CNT NUMBER := 1;
+BEGIN
+    WHILE CNT <= 9 LOOP
+        DBMS_OUTPUT.PUT_LINE(BASE_NUM || '*' || CNT || '=' || BASE_NUM*CNT);
+        CNT := CNT+1;
+        EXIT WHEN CNT > 9;
+    END LOOP;
+END;
+/
+
+-- FORLOOP
+DECLARE
+    NUM NUMBER := 5;
+BEGIN
+    FOR i IN 1..9
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(NUM || '*' || i || '=' || NUM*i);
+    END LOOP;
+END;
+/
+
+-- 역방향
+DECLARE
+    NUM NUMBER := 5;
+BEGIN
+    FOR i IN REVERSE 1..9
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(NUM || '*' || i || '=' || NUM*i);
+    END LOOP;
+END;
+/
+
+-- CONTINUE
+DECLARE
+    NUM NUMBER := 1;
+BEGIN
+    FOR i IN 1..20
+    LOOP
+        CONTINUE WHEN MOD(i,2)=0;
+        DBMS_OUTPUT.PUT_LINE(i);
+    END LOOP;
+END;
+/
+
+-- 함수
+-- 부서 번호로 부서명을 구하는 함수 생성
+CREATE OR REPLACE FUNCTION get_dept_title ( p_dept_id VARCHAR2 )
+RETURN VARCHAR2
+IS
+    OUT_DEPT_TITLE DEPARTMENT.DEPT_TITLE%TYPE;
+BEGIN
+    SELECT DEPT_TITLE
+      INTO OUT_DEPT_TITLE
+    FROM DEPARTMENT
+    WHERE DEPT_ID = p_dept_id;
+
+    RETURN OUT_DEPT_TITLE;
+END;
+
+-- 함수 실행
+SELECT get_dept_title('D1')
+FROM DUAL;
+
+-- 블록에서 함수 실행
+DECLARE
+    RESULT DEPARTMENT.DEPT_TITLE%TYPE;
+BEGIN
+    RESULT := GET_DEPT_TITLE('D1');
+    DBMS_OUTPUT.PUT_LINE(RESULT);
+END;
+/
+
+-- 114. 사원번호로 부서명을 구하는 함수
+CREATE OR REPLACE FUNCTION dept_title(p_emp_id VARCHAR2)
+RETURN VARCHAR2
+IS
+    OUT_TILTE DEPARTMENT.DEPT_TITLE%TYPE;
+BEGIN
+    SELECT DEPT_TITLE
+        INTO OUT_TILTE
+    FROM DEPARTMENT D, EMPLOYEE E
+    WHERE D.DEPT_ID = E.DEPT_CODE AND E.EMP_ID = p_emp_id;
+    RETURN OUT_TILTE;
+END;
+/
+
+-- 
+SELECT dept_title(EMP_ID)
+FROM EMPLOYEE;
+
+DECLARE
+    RES DEPARTMENT.DEPT_TITLE%TYPE;
+BEGIN
+    RES := DEPT_TITLE('200');
+    DBMS_OUTPUT.PUT_LINE(RES);
+END;
+/
+
+-- EMP_ID 인자로 넘겨주면 사원구분 매니저 사원을 반환(함수사용)
+CREATE OR REPLACE FUNCTION emp_type(p_emp_id VARCHAR2)
+RETURN VARCHAR2
+IS  
+    RES VARCHAR(10);
+BEGIN
+    SELECT CASE
+        WHEN 
+            EXISTS( SELECT 1 FROM EMPLOYEES WHERE MANAGER_ID = p_emd_id)
+            THEN '매니저'
+            ELSE '사원'
+    END CASE
+    INTO RES
+    FROM DUAL;
+    RETURN RES;
+END;
+/
+
+-- EMP_ID 인자로 넘겨주면 사원구분 매니저 사원을 반환(함수사용)
+SELECT EMP_ID, EMP_NAME, DEPT_TITLE(EMP_ID) 부서명, EMP_TYPE(EMP_ID) 구분
+FROM EMPLOYEE;
+
+-- 프로시저 생성
+CREATE or REPLACE PROCEDURE PRO_PRINT
+IS
+    V_A NUMBER := 10;
+    V_B NUMBER := 20;
+    V_C NUMBER;
+BEGIN
+    V_C := V_A + V_B;
+    DBMS_OUTPUT.PUT_LINE('V_C? ' || V_C);
+END;
+/
+
+-- 프로시저 실행
+SET SERVEROUTPUT ON;
+EXECUTE PRO_PRINT();
+
+-- 파라미터가 있는 프로시저 생성
+CREATE OR REPLACE PROCEDURE PRO_EMP_WRITER
+(
+    IN_EMP_ID IN EMPLOYEE.EMP_ID%TYPE,
+    IN_TITLE IN VARCHAR2 DEFAULT '제목없음',
+    IN_CONTENT IN VARCHAR2 DEFAULT '내용없음'
+)
+IS
+    V_EMP_NAME EMPLOYEE.EMP_NAME%TYPE;
+BEGIN
+    SELECT EMP_NAME INTO V_EMP_NAME
+    FROM EMPLOYEE
+    WHERE EMP_ID = IN_EMP_ID;
+
+    INSERT INTO BOARD(BOARD_NO, TITLE, WRITER, CONTENT)
+    VALUES(SEQ_BOARD.NEXTVAL, IN_TITLE, V_EMP_NAME, IN_CONTENT);
+END;
+/
+
+-- 시퀀스 생성
+CREATE SEQUENCE SEQ_BOARD
+INCREMENT BY 1
+START WITH 1
+MINVALUE 1
+MAXVALUE 10000;
+
+-- 직무 변경에 따른 직무 이력 갱신하기
+CREATE OR REPLACE PROCEDURE PRO_APP_EMP (
+    -- 파라미터
+    IN_EMP_ID IN EMPLOYEES.EMPLOYEE_ID%TYPE,     -- 사원번호
+    IN_JOB_ID IN JOBS.JOB_ID%TYPE,               -- 직무ID
+    IN_STD_DATE IN DATE,                         -- 직무 시작일
+    IN_END_DATE IN DATE                          -- 직무 종료일
+)
+IS
+    -- 선언부
+    V_DEPT_ID EMPLOYEES.DEPARTMENT_ID%TYPE;     -- 부서번호
+    V_CNT NUMBER := 0;                          -- 직무이력 개수
+BEGIN
+    -- 실행부
+    -- 1. 사원 테이블에서 부서번호 조회
+    SELECT DEPARTMENT_ID INTO V_DEPT_ID
+    FROM EMPLOYEES
+    WHERE EMPLOYEE_ID = IN_EMP_ID;
+
+    -- 2. 사원 테이블의 JOB_ID 수정
+    -- AC_MGR   -->     IT_PROG
+    UPDATE EMPLOYEES
+       SET JOB_ID = IN_JOB_ID
+    WHERE EMPLOYEE_ID = IN_EMP_ID;
+
+    -- 3. 직무이력 테이블에 업무이력 생신
+    -- * 현재 날짜에 포함된 직무이력 여부 확인
+    SELECT COUNT(*) INTO V_CNT      -- 직무이력 개수
+    FROM JOB_HISTORY
+    WHERE EMPLOYEE_ID = IN_EMP_ID
+      AND sysdate BETWEEN START_DATE AND END_DATE;
+
+    -- 해당 기간에 직무 이력이 없으면 --> 새로 추가
+    IF V_CNT = 0 THEN
+        INSERT INTO JOB_HISTORY( EMPLOYEE_ID, START_DATE, END_DATE, JOB_ID, DEPARTMENT_ID )
+        VALUES ( IN_EMP_ID, IN_STD_DATE, IN_END_DATE, IN_JOB_ID, V_DEPT_ID );
+    -- 해당 기간에 직무 이력이 있으면 --> 직무ID, 시작일, 종료일 변경 
+    ELSE
+        UPDATE JOB_HISTORY
+           SET JOB_ID = IN_JOB_ID
+              ,START_DATE = IN_STD_DATE
+              ,END_DATE = IN_END_DATE
+        WHERE EMPLOYEE_ID = IN_EMP_ID 
+          AND sysdate BETWEEN START_DATE AND END_DATE;
+          
+    END IF;
+END;
+/
+
+-- 추가
+EXECUTE PRO_APP_EMP('200','IT_PROG','2025/01/01','2026/01/01');
+EXECUTE PRO_APP_EMP('200','IT_PROG','2023/01/01','2024/12/31');
+-- 수정확인 전
+EXECUTE PRO_APP_EMP('200', 'SA_REP', '2023/01/01','2025/12/31');
+-- 수정 확인후 
+EXECUTE PRO_APP_EMP('200', 'MK_REP', '2023/01/01', '2024/12/31');
+
+DELETE FROM JOB_HISTORY WHERE EMPLOYEE_ID = '102' AND JOB_ID='IT_PROG';
+
+SELECT * FROM JOB_HISTORY WHERE EMPLOYEE_ID = 200 ORDER BY END_DATE;
+
+-- 변경전
+EXECUTE PRO_APP_EMP('103', 'AC_MGR', '2003/01/01', '2008/12/31');
+-- 변경후
+EXECUTE PRO_APP_EMP('103','AC_ACCOUNT','2004/01/01','2006/12/31');
+SELECT * FROM JOB_HISTORY WHERE EMPLOYEE_ID = 103 ORDER BY END_DATE;
+
+-- OUT 파라미터를 사용한 프로시저
+-- '200/김조은/3,000,000'
+CREATE OR REPLACE PROCEDURE PRO_OUT_EMP (
+    IN_EMP_ID IN EMPLOYEE.EMP_ID%TYPE,  -- 사원번호
+    OUT_RESULT_STR OUT CLOB
+)
+IS
+    V_EMP EMPLOYEE%ROWTYPE;
+    -- %ROWTYPE
+    -- : 해당 테이블 또는 뷰의 컬럼들을 참조타입으로 선언
+BEGIN
+    SELECT * INTO V_EMP
+    FROM EMPLOYEE
+    WHERE EMP_ID = IN_EMP_ID;
+
+    OUT_RESULT_STR := V_EMP.EMP_ID
+                      || '/' || V_EMP.EMP_NAME
+                      || '/' || V_EMP.SALARY;
+END;
+/
+
+-- OUT 파라미터 프로시저 실행(블록으로 실행)
+DECLARE
+    -- 프로시저 OUT 결과를 받아올 변수
+    OUT_RESULT_STR CLOB;
+BEGIN
+    -- 프로시저 실행
+    PRO_OUT_EMP( '200', OUT_RESULT_STR );
+    DBMS_OUTPUT.PUT_LINE( OUT_RESULT_STR );
+END;
+/
+
+-- 프로시저로 OUT 파라미터 2개 이상 사용
+-- 프로시저로 OUT 파라미터 2개 이상 사용하기
+CREATE OR REPLACE PROCEDURE PRO_OUT_MUL (
+    IN_EMP_ID IN EMPLOYEE.EMP_ID%TYPE,
+    OUT_DEPT_CODE OUT EMPLOYEE.DEPT_CODE%TYPE,
+    OUT_JOB_CODE OUT EMPLOYEE.JOB_CODE%TYPE
+)
+IS
+    V_EMP EMPLOYEE%ROWTYPE;
+BEGIN
+    SELECT * INTO V_EMP
+    FROM EMPLOYEE
+    WHERE EMP_ID = IN_EMP_ID;
+
+    OUT_DEPT_CODE := V_EMP.DEPT_CODE;
+    OUT_JOB_CODE := V_EMP.JOB_CODE;
+END;
+/
+
+-- 프로시저 호출
+-- 1) 매개변수 없거나, IN 매개변수만 : EXECUTE 프로시저명( 인자1, 인자2 );
+-- 2) OUT 매개변수                  : PL/SQL 블록 안에서 호출
+
+-- EXECUTE PRO_OUT_MUL( 1, 2, 3 ) -- OUT 파라미터가 있어서, 블록 안에서 호출해야함
+DECLARE
+    OUT_DEPT_CODE EMPLOYEE.DEPT_CODE%TYPE;
+    OUT_JOB_CODE EMPLOYEE.JOB_CODE%TYPE;
+BEGIN
+    -- 호출
+    PRO_OUT_MUL( '200', OUT_DEPT_CODE, OUT_JOB_CODE );
+    DBMS_OUTPUT.PUT_LINE('부서코드 : ' || OUT_DEPT_CODE );
+    DBMS_OUTPUT.PUT_LINE('직급코드 : ' || OUT_JOB_CODE );
+END;
+/
+
+-- 프로시저 예외처리
+CREATE OR REPLACE PROCEDURE PRO_PRINT_EMP(
+    IN_EMP_ID IN EMPLOYEE.EMP_ID%TYPE
+)
+IS
+    STR_EMP CLOB;
+    V_EMP EMPLOYEE%ROWTYPE;
+BEGIN
+    SELECT * INTO V_EMP
+    FROM EMPLOYEE
+    WHERE EMP_ID = IN_EMP_ID;
+
+    STR_EMP := '사원정보' || CHR(10) ||
+                '사원명' || V_EMP.EMP_NAME || CHR(10) ||
+                '이메일' || V_EMP.EMAIL || CHR(10) ||
+                '전화번호' || V_EMP.PHONE;
+
+    DBMS_OUTPUT.PUT_LINE(STR_EMP);
+
+    EXCEPTION
+        -- NO_DATA_FOUND : SELECT INTO 변수를 사용할때 조회한 결과가 하나도 없는 경우 발생
+        WHEN NO_DATA_FOUND THEN
+            STR_EMP := '존재하지 않는 사원 ID 입니다.';
+        DBMS_OUTPUT.PUT_LINE(STR_EMP);
+END;
+/
+-- 존재하는 번호
+EXECUTE PRO_PRINT_EMP('200');
+-- 예외처리 확인
+EXECUTE PRO_PRINT_EMP('300');
+
+-- 115
+CREATE OR REPLACE PROCEDURE PROMOTE_EMPLOYEE(
+    P_EMP_ID IN NUMBER
+)
+IS
+-- 근속년수
+    V_YEAR_OF_WORK NUMBER;
+-- 직급번호
+    V_JOB_CODE VARCHAR2(2);
+BEGIN
+    -- 근속년수 조회
+    SELECT TRUNC(MONTHS_BETWEEN(SYSDATE,HIRE_DATE)/12) INTO V_YEAR_OF_WORK
+    FROM EMPLOYEE
+    WHERE EMP_ID = P_EMP_ID;
+
+    -- 근속 년수에 따라 직급코드 결정
+    IF V_YEAR_OF_WORK > 15 THEN V_JOB_CODE := 'J2';
+    ELSIF V_YEAR_OF_WORK > 13 THEN V_JOB_CODE := 'J3';
+    ELSIF V_YEAR_OF_WORK > 10 THEN V_JOB_CODE := 'J4';
+    ELSIF V_YEAR_OF_WORK > 6 THEN V_JOB_CODE := 'J5';
+    ELSIF V_YEAR_OF_WORK > 3 THEN V_JOB_CODE := 'J6';
+    ELSE DBMS_OUTPUT.PUT_LINE('승진 대상자가 아님');
+    RETURN;
+    END IF;
+
+    -- 직급 수정
+    UPDATE EMPLOYEE
+    SET JOB_CODE = V_JOB_CODE
+    WHERE EMP_ID = P_EMP_ID;
+
+    -- 결과 출력
+    DBMS_OUTPUT.PUT_LINE(P_EMP_ID || ' 사원을' || V_JOB_CODE || ' 직급으로 승진합니다.');
+
+    -- 예외처리
+    EXCEPTION WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('존재하지 않는 사원번호 입니다.');
+            WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('예외 발생 : ' || SQLERRM);
+        -- SQLERRM : 에러메세지 반환
+END;
+/
+SELECT JOB_CODE FROM EMPLOYEE WHERE EMP_ID ='125';
+
+EXECUTE PROMOTE_EMPLOYEE('215');
