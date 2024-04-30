@@ -1,6 +1,5 @@
-module JavaFx_Scene {
+module JavaFX_Scene {
 	requires javafx.controls;
-	requires javafx.graphics;
 	
 	opens application to javafx.graphics, javafx.fxml;
 }

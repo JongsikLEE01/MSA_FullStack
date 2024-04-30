@@ -9,25 +9,39 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Controller {
+
 	// 레이아웃
 	@FXML
-	private AnchorPane scenePane;
+	private AnchorPane scenePane; 
 	
 	Stage stage;
 	
+	// 로그아웃(프로그램 종료) 처리 메소드
 	public void logout(ActionEvent event) {
 		System.out.println("click logout...");
-
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("logout");
-		alert.setHeaderText("로그아웃 진행...");
-		alert.setContentText("종료전에 저장?");
 		
-		if(alert.showAndWait().get() ==  ButtonType.OK) {
-			// 레이아웃 -> scene ->window 순서로 접근
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Logout");
+		alert.setHeaderText("로그아웃을 진행합니다.");
+		alert.setContentText("종료 전에 저장하시겠습니까?");
+		
+		// 경고창에서 OK 버튼 클릭 시
+		if( alert.showAndWait().get() == ButtonType.OK ) {
 			stage = (Stage) scenePane.getScene().getWindow();
-			System.out.println("프로그램 종료...");
+			System.out.println("프로그램을 종료합니다...");
 			stage.close();
 		}
 	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+

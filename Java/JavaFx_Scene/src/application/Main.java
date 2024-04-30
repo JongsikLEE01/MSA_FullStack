@@ -1,18 +1,20 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	
 	private Stage primaryStage; // 주 창을 나타내는 Stage 객체
     private Scene sceneA, sceneB; // SceneA와 SceneB를 나타내는 Scene 객체
+	
 	@Override
 	public void start(Stage primaryStage) {
+		
 		this.primaryStage = primaryStage;
 
         // SceneA 생성
@@ -31,9 +33,18 @@ public class Main extends Application {
         primaryStage.setScene(sceneA);
         primaryStage.setTitle("화면 이동"); // 윈도우 타이틀 설정
         primaryStage.show(); // 주 창을 화면에 표시
+		
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 }
+
+
+
+
+
+
+
+

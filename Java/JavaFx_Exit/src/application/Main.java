@@ -2,13 +2,13 @@ package application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
+
 
 public class Main extends Application {
 	@Override
@@ -18,33 +18,48 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
-					
+			
 			// 프로그램 종료 시, 처리 작업
-			stage.setOnCloseRequest(event -> {
-				event.consume();	// 기존 이벤트(프로그램 종료) 제거
-				// 메소드 호츌
-				logout(stage);		// 메소드 호출
+			stage.setOnCloseRequest( event -> {
+				// 기본 이벤트(프로그램 종료) 제거
+				// "consume" : 소멸시키다
+				event.consume();
+				// 메소드 호출
+				logout(stage);
 			});
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * 기존 프로그램 종료 흐름 대신 처리
+	 * @param stage
+	 */
 	public void logout(Stage stage) {
 		System.out.println("click logout...");
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("logout");
-		alert.setHeaderText("로그아웃 진행...");
-		alert.setContentText("종료전에 저장?");
+		alert.setTitle("Logout");
+		alert.setHeaderText("로그아웃을 진행합니다.");
+		alert.setContentText("종료 전에 저장하시겠습니까?");
 		
-		if(alert.showAndWait().get() ==  ButtonType.OK) {
-			System.out.println("프로그램 종료...");
+		// 경고창에서 OK 버튼 클릭 시
+		if( alert.showAndWait().get() == ButtonType.OK ) {
+			System.out.println("프로그램을 종료합니다...");
 			stage.close();
 		}
+		
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 }
+
+
+
+
+
+

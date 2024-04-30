@@ -1,6 +1,8 @@
-module JavaFx_TableView {
+module JavaFX_TableView {
+	requires javafx.base;
 	requires javafx.controls;
 	requires javafx.fxml;
-	requires javafx.base;
+	
 	opens application to javafx.base, javafx.graphics, javafx.fxml;
+	
 }

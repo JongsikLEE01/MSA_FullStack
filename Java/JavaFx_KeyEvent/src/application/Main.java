@@ -2,11 +2,11 @@ package application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+
 
 public class Main extends Application {
 	@Override
@@ -25,46 +25,40 @@ public class Main extends Application {
 		}
 	}
 	
+	// 키보드로 도형을 이동시키는 이벤트 정의
 	public void setEvent(Scene scene, Parent root) {
-		Circle circle = (Circle) root.lookup("#circle");
-		if(circle != null) {
-			//원이 존재하는 경우
-			System.out.println("반지름? "+circle.getRadius());
-		}else {
-			//원이 존재하지 않는 경우
-			System.out.println("원을 찾을 수 없음...");
-			return;
-		}
-		Label label = (Label) root.lookup("#label");
-		if(label != null) {
-			System.out.println("존재");
-		}
 		
+		Circle circle = (Circle) root.lookup("#circle");
+        if (circle != null) {
+            // 원이 존재하는 경우
+            System.out.println("원의 반지름: " + circle.getRadius());
+        } else {
+            // 원이 존재하지 않는 경우
+            System.out.println("원을 찾을 수 없습니다.");
+            return;		// 원 객체없으면, 메소드 종료
+        }
+        
 		// 키 입력 이벤트 등록
-		scene.setOnKeyPressed(e -> {
-			double x = circle.getCenterX();	// 원 중심 x좌표
-			double y = circle.getCenterY();	// 원 중심 y좌표
-			switch (e.getCode()) {			// getCode() : 입력한 키의 코드값
-			case UP:
-				System.out.println("UP");
-				label.setText("시작위치 x : "+ circle.getCenterX() + ", y : "+circle.getCenterY());
-				circle.setCenterY(y-=5);
-				break;
-			case DOWN:
-				label.setText("시작위치 x : "+ circle.getCenterX() + ", y : "+circle.getCenterY());
-				System.out.println("DOWN");
-				circle.setCenterY(y+=5);
-				break;
-			case LEFT:
-				label.setText("시작위치 x : "+ circle.getCenterX() + ", y : "+circle.getCenterY());
-				System.out.println("LEFT");
-				circle.setCenterX(x-=5);
-				break;
-			case RIGHT:
-				label.setText("시작위치 x : "+ circle.getCenterX() + ", y : "+circle.getCenterY());
-				System.out.println("RIGHT");
-				circle.setCenterX(x+=5);
-				break;
+		scene.setOnKeyPressed( event -> {
+			double x = circle.getCenterX();		// 원의 중심 x좌표
+			double y = circle.getCenterY();		// 원의 중심 y좌표
+			switch (event.getCode()) {			// event.getCode() : 입력한 키의 코드 값
+				case UP:						// 방향키 위쪽
+					System.out.println("UP");
+					circle.setCenterY(y-=10);
+					break;
+				case DOWN:						// 방향키 아래쪽
+					System.out.println("DOWN");
+					circle.setCenterY(y+=10);
+					break;
+				case LEFT:						// 방향키 왼쪽
+					System.out.println("LEFT");
+					circle.setCenterX(x-=10);
+					break;
+				case RIGHT:						// 방향키 오른쪽
+					System.out.println("RIGHT");
+					circle.setCenterX(x+=10);
+					break;
 			}
 		});
 	}
@@ -73,3 +67,12 @@ public class Main extends Application {
 		launch(args);
 	}
 }
+
+
+
+
+
+
+
+
+

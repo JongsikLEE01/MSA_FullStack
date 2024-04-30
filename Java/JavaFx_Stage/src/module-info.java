@@ -1,6 +1,5 @@
-module JavaFx_Stage {
+module JavaFX_Stage {
 	requires javafx.controls;
-	requires javafx.graphics;
 	
 	opens application to javafx.graphics, javafx.fxml;
 }

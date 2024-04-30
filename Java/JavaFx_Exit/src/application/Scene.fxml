@@ -4,17 +4,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<!-- fx:id : Controller의 scenePane id 값과 연동시켜줌 -->
-<AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+
+<AnchorPane fx:id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <Label alignment="CENTER" layoutX="258.0" layoutY="65.0" text="Exit">
+      <Label alignment="CENTER" layoutX="218.0" layoutY="35.0" prefHeight="50.0" prefWidth="165.0" text="프로그램 종료">
          <font>
-            <Font size="50.0" />
+            <Font size="19.0" />
          </font>
       </Label>
-      <Button layoutX="239.0" layoutY="245.0" mnemonicParsing="false" onAction="#logout" text="logout">
+      <Button layoutX="164.0" layoutY="167.0" mnemonicParsing="false" onAction="#logout" prefHeight="67.0" prefWidth="274.0" text="로그아웃">
          <font>
-            <Font size="30.0" />
+            <Font size="36.0" />
          </font>
       </Button>
    </children>
