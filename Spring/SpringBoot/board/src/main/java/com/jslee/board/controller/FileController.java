@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 public class FileController {
     @Autowired
     FileService fileService;
+
+    @Value("${upload.path}")   // application.properties에 설정한 업로드 경로를 가져옴
+    private String path;
 
     /**
      * 파일 다운로드
@@ -77,6 +82,46 @@ public class FileController {
 
         // 삭제 성공
         return new ResponseEntity<>("SUCCESS",HttpStatus.OK);
+    }
+    
+    // /file/img/{no}
+    /**
+     * 이미지 썸네일
+     * @param param
+     * @return
+     */
+    @GetMapping("/img/{no}")
+    public ResponseEntity<byte[]> tumbnailImg(@PathVariable("no") int no) throws Exception{
+        // 파일번호로 파일 정보 조회
+        Files file = fileService.select(no);
+
+        // 이미지 컨텐츠 타입 지정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        // null 체크
+        if(file == null){
+            String filePath = path + "/no-image.png";
+            File noImgFile = new File(filePath);
+            byte[] noImgFileData = FileCopyUtils.copyToByteArray(noImgFile);
+
+            return new ResponseEntity<>(noImgFileData, headers,HttpStatus.OK);
+        }
+
+        // 파일 정보 중에서 파일 경로를 추출
+        String path = file.getFilePath();
+
+        // 파일 객체 생성
+        File f = new File(path);
+
+        // 파일 데이터
+        byte[] fileData = FileCopyUtils.copyToByteArray(f);
+
+        
+        // headers.setContentType(MediaType.IMAGE_PNG);
+
+        // new ResponseEntity<>(데이터, 헤더, 상태코드)
+        return new ResponseEntity<>(fileData, headers, HttpStatus.OK);
     }
     
 }

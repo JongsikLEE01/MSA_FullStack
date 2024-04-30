@@ -19,5 +19,11 @@ public class Board {
 
     // 파일 정보
     List<MultipartFile> file;
+
+    // 썸네일 이미지 파일
+    MultipartFile thumbnail;
+    
+    // 파일 번호
+    private int fileNo;
 }
  

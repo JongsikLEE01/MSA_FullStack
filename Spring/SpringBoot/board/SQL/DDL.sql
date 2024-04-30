@@ -1,6 +1,3 @@
-select * from joeun.board;
-DROP Table joeun.board;
-
 -- 게시판
 CREATE TABLE joeun.`board` (
   `no` int NOT NULL AUTO_INCREMENT,

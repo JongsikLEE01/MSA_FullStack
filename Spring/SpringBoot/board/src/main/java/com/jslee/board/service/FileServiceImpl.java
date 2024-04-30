@@ -138,7 +138,7 @@ public class FileServiceImpl implements FileService {
         // filePath -> C:/upload/UID_원본파일명.xxx
         file.setFilePath(filePath);
         file.setFileSize(size);
-        file.setFileCode(0);
+        // file.setFileCode(0);
 
         fileMapper.insert(file);
 
