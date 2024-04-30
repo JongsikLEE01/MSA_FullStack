@@ -46,6 +46,7 @@ MSA5기 더조은아카데미 웹 HTML, CSS, JavaScript 실습
 | 8 | 배열, 함수, 객체, DOM, BOM |
 | 9 | jQuery, JSON, XML, AJAX |
 | 10 | Slick, Swiper 슬라이드 |
+
 <br><br>
 
 
@@ -98,7 +99,7 @@ MSA5기 더조은아카데미 SpringFramework, SpringBoot 실습
 - MyBatis 3.0
 - Thymeleaf
 
-### 커리큘럼
+### 배운 내용
 | Spring | Info |
 | ------ | ------ |
 | spring-di | 의존성 주입 |
