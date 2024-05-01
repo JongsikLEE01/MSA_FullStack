@@ -21,16 +21,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 댓글 등록 -->
     <insert id="insert">
-        INSERT INTO reply(writer, content)
-        VALUES (#{writer}, #{content} )
+        INSERT INTO reply(board_no, parent_no, writer, content)
+        VALUES (#{board_no}, #{parent_no}, #{writer}, #{content} )
     </insert>
 
     <!-- 댓글 수정 -->
     <update id="update">
         UPDATE reply
-           SET title = #{title}
-              ,writer = #{writer}
-              ,content = #{content}
+           SET writer = #{writer}
+              , content = #{content}
+              , upd_date = now()
         WHERE no = #{no}
     </update>
 
