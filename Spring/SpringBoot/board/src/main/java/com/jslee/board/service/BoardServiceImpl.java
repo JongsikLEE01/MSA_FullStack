@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jslee.board.dto.Board;
 import com.jslee.board.dto.Files;
+import com.jslee.board.dto.Option;
+import com.jslee.board.dto.Page;
 import com.jslee.board.mapper.BoardMapper;
 
 @Service
@@ -15,15 +17,19 @@ public class BoardServiceImpl implements BoardService {
     
     @Autowired
     private BoardMapper boardMapper;
-
     @Autowired
     private FileService fileService;
 
     @Override
-    public List<Board> list() throws Exception {
+    // public List<Board> list(Page page) throws Exception {
+    public List<Board> list(Page page, Option option) throws Exception {
+        // 게시글 데이터 개수 조회
+        int total =  boardMapper.count(option);
+        page.setTotal(total);
+
         // boardMapper 로 list() 호출
         // 게시글 목록
-        List<Board> boardList = boardMapper.list();
+        List<Board> boardList = boardMapper.list(page, option);
 
         return boardList;
     }
@@ -108,10 +114,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> serch(String keyword) throws Exception {
+    // public List<Board> search(String keyword) throws Exception {
+    public List<Board> search(Option option) throws Exception {
         // boardMapper 로 list() 호출
-        List<Board> boardList = boardMapper.serch(keyword);
+        // List<Board> boardList = boardMapper.search(keyword);
+        List<Board> boardList = boardMapper.search(option);
 
         return boardList;
+    }
+
+    @Override
+    public int updateLike(int likes) throws Exception {
+        // boardMapper로 updateLike(likes) 호출
+        // 버튼 클릭시 좋아요 수 증가
+        int result = boardMapper.updateLike(likes);
+
+        return result;
     }
 }

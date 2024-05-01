@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- namespace="매퍼 인터페이스 경로" --> 
 <mapper namespace="com.jslee.board.mapper.BoardMapper">
 
-    <!-- 게시글 목록 -->
+    <!-- 게시글 목록 / [페이징] + [검색] + [썸네일] -->
     <select id="list" resultType="Board">
         SELECT b.*
                 , f.no file_no
@@ -20,7 +20,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                      AND file_code = 1
                                      ) f
                 ON (b.no = f.parent_no)
+        WHERE
+            <if test="option.code == 0"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR writer LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 1"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 2"> 
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 3"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 4"> 
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
         ORDER BY b.no DESC
+        LIMIT #{page.index}, #{page.rows}
     </select>
 
     <!-- 게시글 조회 -->
@@ -57,6 +77,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM board
     </select>
 
+    <!-- 게시글 검색 -->
+    <select id="search" resultType="Board">
+        SELECT *
+        FROM board
+        WHERE
+            <if test="option.code == 0"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR writer LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 1"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 2"> 
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 3"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 4"> 
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+        ORDER BY no DESC
+    </select>
+
+    <!-- 데이터 개수 조회 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        WHERE
+            <if test="option.code == 0"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR writer LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 1"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 2"> 
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 3"> 
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+            <if test="option.code == 4"> 
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+           </if>
+    </select>
+
     <!-- 조회수 증가 -->
     <update id="updateView">
         UPDATE board
@@ -64,11 +135,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE no = #{no}
     </update>
 
-    <!-- 게시글 검색 -->
-    <select id="serch" parameterType="string" resultType="Board">
-        SELECT *
-        FROM board
-        WHERE title LIKE CONCAT('%',#{title},'%'')
-        ORDER BY no DESC
-    </select>
+    <!-- 좋아요 증가 -->
+    <update id="updateLike">
+        UPDATE board
+           SET likes = likes + 1
+        WHERE no = #{no}
+    </update>
 </mapper>

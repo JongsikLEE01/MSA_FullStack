@@ -1,6 +1,7 @@
 package com.jslee.board.controller;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jslee.board.dto.Board;
 import com.jslee.board.dto.Files;
+import com.jslee.board.dto.Option;
+import com.jslee.board.dto.Page;
 import com.jslee.board.service.BoardService;
 import com.jslee.board.service.FileService;
 
@@ -51,11 +54,35 @@ public class BoardController {
      * @return
      */
     @GetMapping("/list")
-    public String list(Model model) throws Exception{
+    public String list(Model model, Page page, 
+            // @RequestParam(value = "keyword", defaultValue = "") String keyword
+            Option option
+            ) throws Exception{
         // 데이터 요청
-        List<Board> boardList = boardService.list();
+        // List<Board> boardList = boardService.list(page);         // 페이징
+        // List<Board> boardList = boardService.search(keyword);    // 검색
+        // List<Board> boardList = boardService.search(option);     // 검색 + 검색 종류 설정
+        List<Board> boardList = boardService.list(page, option);    // 검색 + 페이징
+        
+        // 페이징
+        log.info("page? "+page);
+        // 검색
+        // log.info("keyword? "+ keyword);
+        log.info("option? "+ option);
+
         // 모델 등록
         model.addAttribute("boardList", boardList);
+        model.addAttribute("page", page);
+
+        // 동적으로 옵션값을 가져오는 경우
+        List<Option> optionList = new ArrayList<Option>();
+        optionList.add(new Option("전체",0));
+        optionList.add(new Option("제목",1));
+        optionList.add(new Option("내용",2));
+        optionList.add(new Option("제목+내용",3));
+        optionList.add(new Option("작성자",4));
+        model.addAttribute("optionList", optionList);
+
         // 뷰 페이지 지정
         return "/board/list";    // resources/templates/board/list.html
     }
@@ -76,8 +103,7 @@ public class BoardController {
         Board board = boardService.select(no);
 
         // 조회수 증가
-        int viwe = boardService.updateView(no);
-        board.setViews(viwe);
+        boardService.updateView(no);
         
         // 파일 목록 요청
         file.setParentTable("board");
@@ -196,13 +222,26 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/serch")
-    public String serch(@RequestParam String keyword,Model model) throws Exception{
+    // @GetMapping("/search")
+    // public String search(@RequestParam String keyword,Model model) throws Exception{
+    //     // 데이터 요청
+    //     List<Board> boardList = boardService.search(keyword);
+    //     // 모델 등록
+    //     model.addAttribute("boardList", boardList);
+    //     // 뷰 페이지 지정
+    //     return "/board/list";    // resources/templates/board/list.html
+    // }
+
+    @GetMapping("/likes")
+    public String updateLikes(int likes, Model model) throws Exception{
         // 데이터 요청
-        List<Board> boardList = boardService.serch(keyword);
-        // 모델 등록
-        model.addAttribute("boardList", boardList);
-        // 뷰 페이지 지정
-        return "/board/list";    // resources/templates/board/list.html
+        int result = boardService.updateLike(likes);
+
+        if(result == 0){
+            log.info("좋아요 등록 실패...");
+            return "redirect:/board/read";
+        }
+        log.info("좋아요 등록 성공...");
+        return "/board/read";
     }
 }
