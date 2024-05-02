@@ -11,6 +11,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT *
         FROM reply
     </select>
+    <!-- 댓글 목록 / 글번호에따른 댓글 목록 -->
+    <select id="listByBoard" resultType="Reply">
+        SELECT *
+        FROM reply
+        WHERE board_no = #{boardNo}
+        ORDER BY reg_date DESC
+    </select>
 
     <!-- 댓글 조회 -->
     <select id="select" resultType="Reply">
@@ -22,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 댓글 등록 -->
     <insert id="insert">
         INSERT INTO reply(board_no, parent_no, writer, content)
-        VALUES (#{board_no}, #{parent_no}, #{writer}, #{content} )
+        VALUES (#{boardNo}, #{parentNo}, #{writer}, #{content} )
     </insert>
 
     <!-- 댓글 수정 -->

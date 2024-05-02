@@ -23,6 +23,14 @@ public class ReplyServiceImpl implements ReplyService{
     }
 
     @Override
+    public List<Reply> listByBoard(int boardNo) throws Exception {
+        // 글번호에 따른 댓글 목록
+        List<Reply> replyList = replyMapper.listByBoard(boardNo);
+
+        return replyList;
+    }
+
+    @Override
     public Reply select(int no) throws Exception {
         // 댓글 조회
         Reply reply = replyMapper.select(no);
@@ -53,5 +61,4 @@ public class ReplyServiceImpl implements ReplyService{
 
         return result;
     }
-    
 }

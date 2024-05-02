@@ -14,3 +14,13 @@ CREATE TABLE reply(
 -- 댓글 조회
 SELECT *
 FROM reply;
+
+-- 데이터 삭제
+TRUNCATE Table reply;
+
+-- 댓글 샘플 데이터 / 글번호 -> 201
+INSERT INTO reply(board_no, parent_no, writer, content)
+VALUES (201, 0, "테스트1", "테스트1")
+     ,(201, 0, "테스트2", "테스트2")
+     ,(201, 0, "테스트3", "테스트3")
+     ,(201, 0, "테스트4", "테스트4");
