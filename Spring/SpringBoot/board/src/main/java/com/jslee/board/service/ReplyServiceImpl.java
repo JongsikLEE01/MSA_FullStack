@@ -42,6 +42,18 @@ public class ReplyServiceImpl implements ReplyService{
     public int insert(Reply reply) throws Exception {
         // 댓글 등록
         int result = replyMapper.insert(reply);
+        int parentNo = reply.getParentNo();
+
+        // 댓글 등록
+        // - 댓글 번호(no)와 부모번호(parent_no)를 똑같이 수정
+        if(result > 0 && parentNo == 0){
+            int no = replyMapper.max();
+            reply.setNo(no);
+            reply.setParentNo(no);
+            replyMapper.update(reply);
+        }
+        // 답글 등록
+        // - 부모 번호가 지정되서 등록
 
         return result;
     }
@@ -59,6 +71,23 @@ public class ReplyServiceImpl implements ReplyService{
         // 댓글 삭제
         int result = replyMapper.delete(no);
 
+        // 자식 답글 삭제
+        if(result > 0)
+            result += deleteByParentNo(no);
+        
+        return result;
+    }
+
+    @Override
+    public int deleteByBoardNo(int boardNo) throws Exception {
+        // 댓글 종속 삭제
+        int result = replyMapper.deleteByBoardNo(boardNo);
+        return result;
+    }
+
+    @Override
+    public int deleteByParentNo(int parentNo) throws Exception {
+        int result = replyMapper.deleteByParentNo(parentNo);
         return result;
     }
 }

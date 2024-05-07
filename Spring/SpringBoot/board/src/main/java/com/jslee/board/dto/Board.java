@@ -1,3 +1,4 @@
+// 게시글
 package com.jslee.board.dto;
 
 import java.util.Date;

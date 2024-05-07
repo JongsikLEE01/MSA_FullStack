@@ -1,3 +1,4 @@
+// 페이지
 package com.jslee.board.dto;
 
 import lombok.Data;

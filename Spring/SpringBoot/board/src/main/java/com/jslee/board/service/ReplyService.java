@@ -22,4 +22,10 @@ public interface ReplyService {
 
     // 게시글 삭제
     public int delete(int no) throws Exception;
+
+    // 댓글 종속 삭제
+    public int deleteByBoardNo(int boardNo) throws Exception;
+
+    // 답글 종속 삭제
+    public int deleteByParentNo(int parentNo) throws Exception;
 }

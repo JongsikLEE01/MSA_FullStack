@@ -1,3 +1,4 @@
+// 검색
 package com.jslee.board.dto;
 
 import lombok.AllArgsConstructor;

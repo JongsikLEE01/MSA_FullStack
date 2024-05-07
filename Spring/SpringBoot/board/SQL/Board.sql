@@ -28,12 +28,9 @@ FROM joeun.board;
 ALTER TABLE board ADD COLUMN likes INT;
 
 -- 게시글 데이터 삭제
-truncate joeun.board;
+truncate board;
 -- 게시글 조회
 select * from joeun.board;
-
-END WHILE;
-
 
 -- board, file 테이블 조인 조회
 SELECT b.*

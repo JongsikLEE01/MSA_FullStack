@@ -19,6 +19,8 @@ public class BoardServiceImpl implements BoardService {
     private BoardMapper boardMapper;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private ReplyService replyService;
 
     @Override
     // public List<Board> list(Page page) throws Exception {
@@ -100,6 +102,9 @@ public class BoardServiceImpl implements BoardService {
         // boardMapper 로 delete(no) 호출
         // 게시글 삭제
         int result = boardMapper.delete(no);
+        if(result > 0){
+            result += replyService.deleteByBoardNo(no);
+        }
 
         return result;
     }
