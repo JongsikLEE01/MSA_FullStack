@@ -7,14 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.jslee.security5.security.CustomDetailsService;
 
 @Configuration          // 스프링 빈 설정 클래스로 지정
 @EnableWebSecurity      // 스프링 시큐리티 설정 빈으로 등록
@@ -23,7 +24,41 @@ public class SecurityConfig{
     @Autowired
     private DataSource dataSource;  // appliction.properties에 정의한 DB정보
 
-    // 기본 설정
+    @Autowired
+    private CustomDetailsService customDetailsService;
+
+    //  인가 설정
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        // .antMatchers("인가URL")
+        //              .permitAll()                    : 모든 사용자 접근 가능
+        //              .hasRole("ROLE_USER")           : ROLE_USER 권한 접근 허용 
+        //              .hasAnyRole("USER", "ADMIN")    : USER, ADMIN 권한 접근 허용
+
+        // anyRequest()          : 설정하지 않은 경로 외에 모든 요청에 대하여 설정
+        //   .authenticated()    : 인증된 사용자만 접근 허용
+        http.authorizeRequests(requests ->requests
+            // 어드민 경로 설정 -> 어드민 접근 허용
+            .antMatchers("/admin","/admin/**").hasRole("ADMIN")
+            // 유저 경로 설정 -> 유저, 어드민 접근 허용
+            .antMatchers("/user","/user/**").hasAnyRole("USER","ADMIN")
+            // css, js, img -> 모든 접근 허용
+            .antMatchers("/css/**","/js/**","/img/**").permitAll()
+            .antMatchers("/**").permitAll()
+            .anyRequest().authenticated())
+            ;
+
+            // 폼 기반 로그인 활성화
+            // ✔ 기본 설정 : 시큐리티 제공 로그인 페이지
+            http.formLogin();
+
+            // 사용자 정의 인증 설정
+            http.userDetailsService(customDetailsService);
+
+            return http.build();
+    }
+
+    // 🔐 사용자 인증 설정
     // - 인메모리 방식
     // - JDBC 인증 방식 인증
 
