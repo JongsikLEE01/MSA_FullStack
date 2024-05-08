@@ -8,4 +8,7 @@ import com.jslee.security5.dto.Users;
 public interface UserMapper {
     // 🔐 로그인 (사용자 인증)
     public Users login(String username);
+
+    // 회원가입
+    public int join(Users user) throws Exception;
 }

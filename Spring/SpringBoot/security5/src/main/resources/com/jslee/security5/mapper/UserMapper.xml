@@ -39,4 +39,9 @@
         WHERE u.user_id = #{userId}
     </select>
 
+    <!-- 회원 가입 -->
+    <insert id="join">
+        INSERT INTO user( user_id, user_pw, name, email )
+        VALUES( #{userId}, #{userPw}, #{name}, #{email})
+    </insert>
 </mapper>
