@@ -2,6 +2,7 @@ package com.jslee.security5.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jslee.security5.dto.UserAuth;
 import com.jslee.security5.dto.Users;
 
 @Mapper
@@ -11,4 +12,7 @@ public interface UserMapper {
 
     // 회원가입
     public int join(Users user) throws Exception;
+
+    // 회원 권한 등록
+    public int insertAuth(UserAuth userAuth) throws Exception;
 }

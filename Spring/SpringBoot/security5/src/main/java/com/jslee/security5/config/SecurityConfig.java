@@ -9,10 +9,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -71,64 +69,69 @@ public class SecurityConfig{
             // css, js, img -> 모든 접근 허용
             .antMatchers("/css/**","/js/**","/img/**").permitAll()
             .antMatchers("/**").permitAll()
-            .anyRequest().authenticated())
-            ;
+            .anyRequest().authenticated()
+            );
 
-            // ✔ 로그인 설정
-            // 폼 기반 로그인 활성화
-            // - 기본 설정 : 시큐리티 제공 로그인 페이지
-            /*
-             * 로그인 커스텀 설정
-             * defaultSuccessUrl()  : 로그인 성공 시, 이동 경로 지정
-             * loginPage()          : 커스텀 로그인 페이지 지정,     기본값 -> ("/login")
-             * loginProcessingUrl() : 커스텀 로그인 처리 경로 기정,  기본값 -> ("/login")
-             * usernameParameter()  : 아이디 요청 파라미터 이름 지정
-             * passwordParameter()  : 비밀번호 요청 파라미터 이름 지정
-             * successHandler()     : 로그인 성공 시, 처리할 빈 지정
-             *                         아이디 저장 (쿠키)
-             */
-            http.formLogin()
-                    .defaultSuccessUrl("/")
-                    .loginPage("/login")
-                    .loginProcessingUrl("/loginPro")
-                    .usernameParameter("id")
-                    .passwordParameter("pw")
-                    .successHandler(authenticationSuccessHandler())
-                    .permitAll();
+        // ✔ 로그인 설정
+        // 폼 기반 로그인 활성화
+        // - 기본 설정 : 시큐리티 제공 로그인 페이지
+        /*
+         * 로그인 커스텀 설정
+         * defaultSuccessUrl()  : 로그인 성공 시, 이동 경로 지정
+         * loginPage()          : 커스텀 로그인 페이지 지정,     기본값 -> ("/login")
+         * loginProcessingUrl() : 커스텀 로그인 처리 경로 기정,  기본값 -> ("/login")
+         * usernameParameter()  : 아이디 요청 파라미터 이름 지정
+         * passwordParameter()  : 비밀번호 요청 파라미터 이름 지정
+         * successHandler()     : 로그인 성공 시, 처리할 빈 지정
+         *                         아이디 저장 (쿠키)
+         */
+        http.formLogin(login -> login.defaultSuccessUrl("/")
+                                     .loginPage("/login")
+                                     .loginProcessingUrl("/loginPro")
+                                     .usernameParameter("id")
+                                     .passwordParameter("pw")
+                                     .successHandler(authenticationSuccessHandler())
+                                     .permitAll()
+                      );
 
-            // 사용자 정의 인증 설정
-            http.userDetailsService(customDetailsService);
+        // 사용자 정의 인증 설정
+        http.userDetailsService(customDetailsService);
 
-            // ✔ 로그아웃 설정
-            // logoutSuccessUrl("URL") : 로그아웃 성공 시, 이동할 URL 지정 -> 기본값은 ("login")
-            // logoutUrl("URL")        : 로그아웃 처리 요청 경로 지정("logout")
-            http.logout().logoutSuccessUrl("/")
-                        .logoutUrl("/logout")
-                        .permitAll();
+        // ✔ 로그아웃 설정
+        // logoutSuccessUrl("URL") : 로그아웃 성공 시, 이동할 URL 지정 -> 기본값은 ("login")
+        // logoutUrl("URL")        : 로그아웃 처리 요청 경로 지정("logout")
+        http.logout(logout -> logout.logoutSuccessUrl("/")
+                                    .logoutUrl("/logout")
+                                    // 쿠키 삭제
+                                    .deleteCookies("remeber-id")
+                                    .permitAll()
+                  );
 
-            // ✔ 자동 로그인 설정
-            // key()                    : 자동 로그인에서 토큰 생성/검증에 사용되는 식별 키
-            // tokenRepository()        : 토큰을 저장할 저장소 지정(데이터소스 포함한 저장소 객체)
-            // tokenValiditySeconds()   : 토큰 유효시간 설정
-            http.rememberMe().key("jslee")
-                            .tokenRepository(tokenRepository())
-                            .tokenValiditySeconds(60 * 60 * 24 * 7);
+        // ✔ 자동 로그인 설정
+        // key()                    : 자동 로그인에서 토큰 생성/검증에 사용되는 식별 키
+        // tokenRepository()        : 토큰을 저장할 저장소 지정(데이터소스 포함한 저장소 객체)
+        //                           persistent_logins (자동로그인 테이블)
+        // tokenValiditySeconds()   : 토큰 유효시간 설정
+        http.rememberMe(me -> me.key("jslee")
+                                .tokenRepository(tokenRepository())
+                                .tokenValiditySeconds(60 * 60 * 24 * 7)
+                      );
 
-            // ✔ 인증 예외 처리
-            // accessDeniedPage()       : 접근 거부 시, 이동 경로 지정
-            // accessDeniedHandler()    : 접근 거부 시, 처리할 빈 지정
-            http.exceptionHandling()
-                            // .accessDeniedPage("/exception")
-                            .accessDeniedHandler(accessDeniedHandler())
-                            ;
+        // ✔ 인증 예외 처리
+        // accessDeniedPage()       : 접근 거부 시, 이동 경로 지정
+        // accessDeniedHandler()    : 접근 거부 시, 처리할 빈 지정
+        http.exceptionHandling(handling -> handling
+                                // .accessDeniedPage("/exception")
+                                .accessDeniedHandler(accessDeniedHandler())
+                              );
 
-            // ✔ CSRF 방지 설정
-            // - 기본 설정 : CSRF 방지 보안 설정
-            // ❓ CSRF (Cross Site Request Forgery)
-            // 사이트 간 요청 위조 (공격)
-            // http.csrf().disable();  // CSRF 방지 비활성화
+        // ✔ CSRF 방지 설정
+        // - 기본 설정 : CSRF 방지 보안 설정
+        // ❓ CSRF (Cross Site Request Forgery)
+        // 사이트 간 요청 위조 (공격)
+        // http.csrf().disable();  // CSRF 방지 비활성화
 
-            return http.build();
+        return http.build();
     }
 
     // 🔐 사용자 인증 설정
