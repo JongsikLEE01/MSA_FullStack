@@ -67,13 +67,13 @@ public class FileServiceImpl implements FileService {
         return result;
     }
 
-    @Override
-    public int upload(String parentTable, int parentNo, List<MultipartFile> fileList) throws Exception {
-        // TODO : 파일 업로드
-        // int result =  fileMapper.upload(parentTable, parentNo, fileList);
-        // return result;
-        throw new UnsupportedOperationException("파일 업로드 구현하세요.");
-    }
+    // @Override
+    // public int upload(String parentTable, int parentNo, List<MultipartFile> fileList) throws Exception {
+    //     // TODO : 파일 업로드
+    //     // int result =  fileMapper.upload(parentTable, parentNo, fileList);
+    //     // return result;
+    //     throw new UnsupportedOperationException("파일 업로드 구현하세요.");
+    // }
 
     @Override
     public int download(int no, HttpServletResponse response) throws Exception {
