@@ -76,7 +76,7 @@ public class BoardServiceImpl implements BoardService {
 
                 // 파일 정보 등록
                 Files  uploadFile = new Files();
-                uploadFile.setFileCode(1);
+                uploadFile.setFileCode(0);
                 uploadFile.setParentTable(parentTable);
                 uploadFile.setParentNo(parentNo);
                 uploadFile.setFile(file);
