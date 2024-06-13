@@ -2,7 +2,9 @@ import React from 'react'
 
 const TodoHeader = () => {
   return (
-    <h1>To Do List</h1>
+    <div className="header">
+      <h1>To Do List</h1>
+    </div>
   )
 }
 

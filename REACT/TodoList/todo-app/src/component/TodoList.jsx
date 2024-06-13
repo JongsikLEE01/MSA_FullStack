@@ -1,32 +1,31 @@
 import { useEffect, useState } from "react";
-import Todo from "./Todo";
+import TodoItem from "./TodoItem"
 
-const TodoList = () => {
-    // 초기값으로 빈배열 설정
-    const [list, setList] = useState([])
-
-    useEffect(()=>{
-        async function fetchData(){
-            try {
-                const response = await fetch('http://localhost:8080/todo');
-                const data = await response.json();
-
-                setList(data)
-                console.log(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    
-        fetchData()
-    }, [])
-
-
+const TodoList = ({todoList, onToggle}) => {
   return (
     <>
-        {list.map((todo, index) =>(
-          <Todo todo={todo} key={todo.no}/>
+      {/* return 생략 */}
+      <ul className="todoList">
+        {todoList.map((todo)=>(
+          <TodoItem todo={todo} onToggle={onToggle}/>
         ))}
+
+        {/* return 방식 */}
+        {/* {todoList.map((todo)=>{
+          return(
+            <li className="todoItem" key={todo.no}>
+              <div className="item">
+                <input type="checkbox" name="" id={todo.no} />
+                <label htmlFor={todo.no}></label>
+                <span>{todo.name}</span>
+              </div>
+              <div className="item">
+                <button className="btn">삭제</button>
+              </div>
+            </li>
+          )
+        })}*/}
+      </ul>
     </>
   )
 }
