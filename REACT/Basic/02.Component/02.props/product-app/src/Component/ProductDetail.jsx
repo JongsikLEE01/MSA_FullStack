@@ -7,8 +7,6 @@ const ProductDetail = ({product}) => {
     // const [상태, 상태설정함수] = useState(초기값)
     const [quantity, setQuantity] = useState(1)
 
-    // 객체 추가 -> App.js로 이전
-
     // 최종 가격 계산
     const totalPrice = product.price * quantity
 

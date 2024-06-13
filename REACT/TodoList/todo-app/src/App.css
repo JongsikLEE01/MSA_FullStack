@@ -1,0 +1,68 @@
+.container{
+  width: 900px;
+  margin: 80px auto;
+  text-align: center;
+  border: 2px solid salmon;
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.todolist{
+  width: 800px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.todo{
+  margin: 20px;
+  border: 2px solid salmon;
+  width: 700px;
+  margin: 50px auto;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 30px;
+  font-size: 18px;
+}
+
+.check{
+}
+
+.btn{
+  background-color: salmon;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  margin: 0 2px;
+  padding: 0 30px;
+  cursor: pointer;
+  transition: 0.5s;
+  border-radius: 15px;
+}
+.btn:hover{
+  background-color: white;
+  color: salmon;
+  border: 1px solid salmon;
+}
+.work{
+  outline: none;
+  border: none;
+  border-bottom: 1px solid salmon;
+  width: 60%;
+  margin-right: 30px;
+}
+.insert{
+  width: 100px;
+  height: 30px;
+  /* margin-left: 10%; */
+}
+.btns{
+  justify-content: space-between;
+  display: flex;
+  justify-content: space-around;
+}
+.btn-lg{
+  padding: 20px 40px;
+  margin-bottom: 20px;
+}

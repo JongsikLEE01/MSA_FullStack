@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import ProductDetail from './Component/ProductDetail';
 import ProductList from './Component/ProductList';
@@ -16,7 +15,7 @@ function App() {
   return (
     <div>
       {/* product 객체를 전달 */}
-      <ProductDetail product={product}/>
+      {/* <ProductDetail product={product}/> */}
 
       <ProductList/>
     </div>

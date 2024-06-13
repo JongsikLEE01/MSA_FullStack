@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Slf4j
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/product")
+@CrossOrigin(origins = "*")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -87,7 +87,7 @@ public class ProductController {
      * @param product
      * @return
      */
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<?> insert(@RequestBody Product product) {
         try {
             int result = productService.insert(product);
