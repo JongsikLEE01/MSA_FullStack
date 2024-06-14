@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem"
 
-const TodoList = ({todoList, onToggle}) => {
+const TodoList = ({todoList, onToggle, onDelete}) => {
   return (
     <>
       {/* return 생략 */}
       <ul className="todoList">
-        {todoList.map((todo)=>(
-          <TodoItem todo={todo} onToggle={onToggle}/>
+        { todoList.map((todo)=>(
+          <TodoItem key={todo.no}
+                    todo={todo} 
+                    onToggle={onToggle}
+                    onDelete={onDelete}/>
         ))}
 
         {/* return 방식 */}

@@ -7,6 +7,7 @@
     <select id="list" resultType="Todo">
         select *
         from todo
+        ORDER BY reg_date DESC;
     </select>
 
     <select id="select" resultType="Todo">
@@ -19,7 +20,7 @@
         update todo
         set name = #{name}
             , status = #{status}
-            <!-- , updDate = now() -->
+            , upd_date = now()
         where no = #{no}
     </update>
 
@@ -28,9 +29,30 @@
         where no = #{no} 
     </delete>
 
+    <!-- 등록 -->
+    <!-- 
+        AUTO_INCREMENT 값 담기
+        1. userGeneratedkeys : AUTO_INCREMENT 된 값을 keyProperty 에 변수에 저장
+        2. selectKey 사용
+     -->
+    <!-- <insert id="insert" userGeneratedkeys="true"> -->
     <insert id="insert">
+        <selectKey keyProperty="no" resultType="int" order="AFTER">
+            select LAST_INSERT_ID() FROM dual
+        </selectKey>
         insert into todo(name, status)
         value (#{name}, #{status})
     </insert>
+
+    <update id="updateAll">
+        update todo
+        set status = 1
+        , upd_date = now()
+    </update>
+
+    <delete id="deleteAll">
+        delete
+        from todo
+    </delete>
 
 </mapper>

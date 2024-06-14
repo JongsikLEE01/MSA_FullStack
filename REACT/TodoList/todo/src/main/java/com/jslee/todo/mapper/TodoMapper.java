@@ -11,6 +11,8 @@ public interface TodoMapper {
     public List<Todo> list();
     public Todo select(int no);
     public int update(Todo todo);
+    public int updateAll();
     public int insert(Todo todo);
     public int delete(int no);
+    public int deleteAll();
 }

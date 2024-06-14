@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Todo = ({todo, onToggle}) => {
+const Todo = ({ todo, onToggle, onDelete }) => {
   let {no, name, status} = todo
   status = status == 1 ? true : false
 
@@ -11,12 +11,15 @@ const Todo = ({todo, onToggle}) => {
           {/* 체크박스 */}
           <input type="checkbox" name="" id={todo.no} 
                 checked={todo.status}
-                onChange={() => onToggle(todo)}/>
+                onChange={() => onToggle(todo)}
+                />
           <label htmlFor={todo.no}></label>
           <span>{todo.name}</span>
+          <input type="text" />
         </div>
         <div className="item">
-          <button className="btn">삭제</button>
+          <button className="btn"
+                  onClick={ () =>onDelete(no)}>삭제</button>
         </div>
       </li>
     </>
