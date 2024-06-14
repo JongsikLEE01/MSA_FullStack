@@ -1,8 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Insert = () => {
   return (
-    <div>Insert</div>
+    <>
+      <h1>게시글 쓰기</h1>
+      <Link to="/board">목록</Link>
+    </>
   )
 }
 
