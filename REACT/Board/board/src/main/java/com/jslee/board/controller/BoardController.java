@@ -18,15 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jslee.board.dto.Board;
 import com.jslee.board.service.BoardService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
     
     @Autowired
     private BoardService boardService;
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<?> getAll() {
         try {
             List<Board> boardList = boardService.list();
@@ -40,13 +43,14 @@ public class BoardController {
     public ResponseEntity<?> getOne(@PathVariable("no") int no) {
         try {
             Board board = boardService.select(no);
+            log.info("board {}",board);
             return new ResponseEntity<>(board, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    @PostMapping()
+    @PostMapping("")
     public ResponseEntity<?> create(@RequestBody Board board) {
         try {
             Board newBoard = boardService.insert(board);
@@ -59,7 +63,7 @@ public class BoardController {
         }
     }
     
-    @PutMapping()
+    @PutMapping("")
     public ResponseEntity<?> update(@RequestBody Board board) {
         try {
             int result = boardService.update(board);

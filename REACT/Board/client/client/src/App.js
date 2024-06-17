@@ -1,20 +1,21 @@
 import './App.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import Home from './components/board/Home';
-import Read from './components/board/Read';
-import Update from './components/board/Update';
-import Insert from './components/board/Insert';
-import List from './components/board/List';
+import Home from './pages/Home';
+import List from './pages/board/List';
+import Insert from './pages/board/Insert';
+import Read from './pages/board/Read';
+import Update from './pages/board/Update';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/board' element={<List/>}></Route>
-        <Route path='/board/:no' element={<Read/>}></Route>
-        <Route path='/board/insert' element={<Insert/>}></Route>
-        <Route path='/board/update/:no' element={<Update/>}></Route>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/boards' element={<List />}></Route>
+        {/* /boards/:no : 경로로 넘어오는 값을 전달받음 */}
+        <Route path='/boards/:no' element={<Read/>}></Route>
+        <Route path='/boards/Insert' element={<Insert />}></Route>
+        <Route path='/boards/update/:no' element={<Update/>}></Route>
       </Routes>
     </BrowserRouter>
   );
