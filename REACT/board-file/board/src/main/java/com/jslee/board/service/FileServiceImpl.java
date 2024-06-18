@@ -1,12 +1,15 @@
 package com.jslee.board.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.tomcat.util.http.fileupload.FileItemStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jslee.board.dto.Files;
 import com.jslee.board.mapper.FileMapper;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -62,8 +67,13 @@ public class FileServiceImpl implements FileService{
 
     // 파일 업로드 로직
     public Files uploadFile(Files fileInfo, MultipartFile file) throws Exception{
+        // log.info("fileInfo? {}", fileInfo);
+        // log.info("file? {}", file);
+
         int result = 0;
-        if (file.isEmpty()) return null;
+        if (file.isEmpty()){
+            return null;
+        }
 
         // 📄 파일 원본명, 사이즈, 데이터
         String originName = file.getOriginalFilename();
@@ -85,7 +95,10 @@ public class FileServiceImpl implements FileService{
         uploadedFile.setFileName(fileName);
         uploadedFile.setFilePath(filePath);
         uploadedFile.setFileSize(fileSize);
-        uploadedFile.setFileCode(fileInfo.getFileCode());;
+        uploadedFile.setOriginName(originName);
+        uploadedFile.setFileCode(fileInfo.getFileCode());
+
+        log.info("uploadedFile? {}",uploadedFile);
 
         result = fileMapper.insert(uploadedFile);
         log.info("result? {}",result);
@@ -94,7 +107,12 @@ public class FileServiceImpl implements FileService{
 
     @Override
     public List<Files> uploadFiles(Files fileInfo, List<MultipartFile> fileList) throws Exception {
+        // log.info("fileInfo? {}", fileInfo);
+        // log.info("fileList? {}", fileList.toString());
+
         List<Files> uploadedFileList = new ArrayList<Files>();
+
+        // log.info("uploadFiles? {}", uploadPath.toString());
 
         for (MultipartFile file : fileList) {
             Files uploadedFile = uploadFile(fileInfo, file);
@@ -104,5 +122,50 @@ public class FileServiceImpl implements FileService{
 
         return uploadedFileList;
     }
-    
+
+    @Override
+    public List<Files> listByParent(Files file) throws Exception {
+        return fileMapper.listByParent(file);
+    }
+
+    @Override
+    public int download(int no, HttpServletResponse response) throws Exception {
+       Files file = fileMapper.select(no);
+
+       if(file == null){
+        // BAD_REQUEST : 400, 클라이언트 요청이 잘못됨을 알리는 상태코드
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return 0;
+       }
+
+       String filePath = file.getFilePath();
+       String fileName = file.getFileName();
+
+        // 파일 다운로드를 위한 헤더 세팅
+        // Content-Type : application/octect-stream
+        // Content-Disposition : attachment; filename="파일명.확장자"
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        response.setHeader("Content-Disposition", "attachment; fileName=\"" + fileName + "\"");
+
+        // 파일 다운로드
+        // - 파일 입력
+        File downloadFile = new File(filePath);
+        FileInputStream fis = new FileInputStream(downloadFile);
+
+        // - 파일 출력
+        ServletOutputStream sos = response.getOutputStream();
+
+        // - 다운로드
+       FileCopyUtils.copy(fis, sos);
+
+        // Java - File I/O
+        // byte[] buffer = new byte[1024];             // 1024bytes : 1KB
+        // int data;
+        // while ((data = fis.read(buffer)) != -1) {   // 1KB 입력
+        //     sos.write(buffer,0,data);           // 1KB 출력(전송)
+        // }
+        fis.close();
+        sos.close();
+        return 1;
+    }
 }

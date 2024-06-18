@@ -1,6 +1,8 @@
 package com.jslee.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jslee.board.dto.Board;
+import com.jslee.board.dto.Files;
 import com.jslee.board.service.BoardService;
+import com.jslee.board.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +32,9 @@ public class BoardController {
     
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private FileService fileService;
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
@@ -42,19 +49,34 @@ public class BoardController {
     @GetMapping("/{no}")
     public ResponseEntity<?> getOne(@PathVariable("no") int no) {
         try {
+            // 게시글
             Board board = boardService.select(no);
             log.info("board {}",board);
-            return new ResponseEntity<>(board, HttpStatus.OK);
+
+            // 파일 목록
+            Files file = new Files();
+            file.setParentTable("board");
+            file.setParentNo(no);
+            List<Files> fileList = fileService.listByParent(file);
+
+            // Map 객체에 fileList, board 모두 담기
+            Map<String, Object> response = new HashMap<>();
+            response.put("board", board);
+            response.put("fileList", fileList);
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Board board) {
+    // public ResponseEntity<?> create(@RequestBody Board board) {  // Content-Type : application/json
+    public ResponseEntity<?> create(Board board) {                  // Content-Type : multipart/form-data
         try {
             Board newBoard = boardService.insert(board);
-            if(newBoard == null)
+            // log.info("newBoard? {}", newBoard);
+            if(newBoard != null)
                 return new ResponseEntity<>(newBoard, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

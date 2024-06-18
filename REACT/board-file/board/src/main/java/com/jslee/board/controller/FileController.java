@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jslee.board.dto.Files;
 import com.jslee.board.service.FileService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 📄 파일
@@ -42,5 +46,16 @@ public class FileController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * 파일 다운로드
+     * @param no
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("/{no}")
+    public void fileDownload(@PathVariable("no") int no, HttpServletResponse response) throws Exception{
+        fileService.download(no, response);
     }
 }

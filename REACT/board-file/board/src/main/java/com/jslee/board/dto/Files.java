@@ -18,5 +18,6 @@ public class Files {
     private Date regDate;
     private Date updDate;
     private int fileCode;
+    
     MultipartFile file;
 }

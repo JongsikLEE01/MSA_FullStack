@@ -2,10 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../board/css/read.module.css'
 import { formatDate } from '../../apis/format'
+import '../board/css/read.css'
 
-const Read = ({ board, no, isLoading }) => {
-  console.log(board);
+const Read = ({ board, no, fileList, isLoading, onDownload }) => {
 
+  const handleDownload = (no, fileName) =>{
+    // 중간 처리 가능
+
+    onDownload(no, fileName)
+  }
+  
   return (
     <div className="contrainer">
       <h1 className="title">게시글 조회</h1>
@@ -54,6 +60,25 @@ const Read = ({ board, no, isLoading }) => {
               <tr>
                 <td colSpan={2}>
                   <textarea cols="40" className={styles['form-input']} rows="10" value={board.content}></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>파일</td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  { fileList.map( (file) => (
+                      <div className='flex-box' key={file.no}>
+                        <div className="item">
+                          <span>{file.originName}</span>
+                        </div>
+
+                        <div className="item">
+                          <button className='btn'
+                                  onClick={() => handleDownload(file.no, file.originName)}>다운로드</button>
+                        </div>
+                      </div>
+                  ))}
                 </td>
               </tr>
             </tbody>

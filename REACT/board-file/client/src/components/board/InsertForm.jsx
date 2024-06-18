@@ -8,6 +8,7 @@ const InsertForm = ({ onInsert }) => {
   const [title, setTitle] = useState('')
   const [writer, setWriter] = useState('')
   const [content, setContent] = useState('')
+  const [files, setFiles] = useState(null)    // files state 추가
 
   // 함수
   // 데이터 넣기
@@ -20,6 +21,10 @@ const InsertForm = ({ onInsert }) => {
   const handleChangeContent = (e) =>{
     setContent(e.target.value)
   }
+  // 파일 핸들러 추가
+  const handleChangeFiles = (e) =>{
+    setFiles(e.target.files)
+  }
 
   const onSubmit = () =>{
     // 유효성 검사
@@ -27,17 +32,39 @@ const InsertForm = ({ onInsert }) => {
       alert('제목을 입력해주세요')
       return
     }
-
     if(writer == null || writer == '' ){
       alert('작성자를 입력해주세요')
       return
     }
-
     if(content == null || content == '' ){
       alert('내용을 입력해주세요')
       return
     }
-    onInsert(title, writer, content)
+
+    // 파일 업로드
+    // Content-Type : application/json -> multipart/form-data
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('writer', writer)
+    formData.append('content', content)
+
+    // 파일 데이터 추가
+    if(files){
+      for(let i=0; i<files.length; i++){
+        const file = files[i]
+        formData.append('files', file)
+      }
+    }
+
+    // 헤더
+    const headers = {
+      'Content-Type' : 'multipart/form-data'
+    }
+
+    // console.log(formData);
+
+    // onInsert(title, writer, content)  // json
+    onInsert(formData, headers)          // formData
   }
 
   return (
@@ -68,6 +95,12 @@ const InsertForm = ({ onInsert }) => {
           <tr>
             <td colSpan={2}>
               <textarea cols="40" rows="10" className={styles['form-input']} value={content} onChange={handleChangeContent}></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>파일</td>
+            <td>
+              <input type="file" name="files" onChange={handleChangeFiles} multiple/>
             </td>
           </tr>
         </tbody>

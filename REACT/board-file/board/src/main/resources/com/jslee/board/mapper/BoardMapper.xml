@@ -35,11 +35,11 @@
         1. userGeneratedkeys : AUTO_INCREMENT 된 값을 keyProperty 에 변수에 저장
         2. selectKey 사용
      -->
-    <!-- <insert id="insert" userGeneratedkeys="true"> -->
+    <!-- <insert id="insert" useGeneratedKeys="true" keyProperty="no"> -->
     <insert id="insert">
-        <!-- <selectKey keyProperty="no" resultType="int" order="AFTER">
+        <selectKey keyProperty="no" resultType="int" order="AFTER">
             select LAST_INSERT_ID() FROM dual
-        </selectKey> -->
+        </selectKey>
         insert into board_react(title, content, writer)
         value (#{title}, #{content}, #{writer})
     </insert>

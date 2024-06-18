@@ -6,13 +6,13 @@
 <mapper namespace="com.jslee.board.mapper.FileMapper">
 
     <!-- 목록 -->
-    <select id="list" resultType="File">
+    <select id="list" resultType="Files">
         SELECT *
         FROM file_react
     </select>
 
     <!-- 조회 -->
-    <select id="select" resultType="File">
+    <select id="select" resultType="Files">
         SELECT *
         FROM file_react
         WHERE no = #{no}
@@ -23,12 +23,12 @@
         INSERT INTO file_react ( parent_table
                                 , parent_no
                                 , file_name
-                                , orgint_name
+                                , origin_name
                                 , file_path
                                 , file_size
                                 , file_code )
         VALUES ( #{parentTable}, #{parentNo}, #{fileName}
-                , #{orgintName}, #{filePath}, #{fileSize}
+                , #{originName}, #{filePath}, #{fileSize}
                 , #{fileCode} )
     </insert>
 
@@ -45,5 +45,15 @@
         DELETE FROM file_react
         WHERE no = #{no}
     </delete>
+
+    <!-- 파일 목록 - 부모 테이블 기준 -->
+    <select id="listByParent" resultType="Files">
+        SELECT *
+        FROM file_react
+        WHERE parent_table = #{parentTable}
+            AND parent_no = #{parentNo}
+        ORDER BY reg_date DESC
+    </select>
+
 
 </mapper>
