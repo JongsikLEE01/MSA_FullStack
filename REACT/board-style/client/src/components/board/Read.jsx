@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import styles from '../board/css/read.module.css'
+import { formatDate } from '../../apis/format'
 
 const Read = ({ board, no, isLoading }) => {
   console.log(board);
@@ -20,30 +22,30 @@ const Read = ({ board, no, isLoading }) => {
       {
         // 로딩이 끝난 경우
         !isLoading && board && (
-          <table>
+          <table className={styles.table}>
             <tbody>
               <tr>
                 <td>번호</td>
                 <td>
-                  <input type="text" value={no} readOnly/>
+                  <input type="text" className={styles['form-input']} value={no} readOnly/>
                 </td>
               </tr>
               <tr>
                 <td>등록 일자</td>
                 <td>
-                  <input type="text" value={board.regDate} readOnly/>
+                  <input type="text" className={styles['form-input']} value={formatDate(board.regDate)} readOnly/>
                 </td>
               </tr>
               <tr>
                 <td>제목</td>
                 <td>
-                  <input type="text" value={board.title} readOnly/>
+                  <input type="text" className={styles['form-input']} value={board.title} readOnly/>
                 </td>
               </tr>
               <tr>
                 <td>작성자</td>
                 <td>
-                  <input type="text" value={board.writer} readOnly/>
+                  <input type="text" className={styles['form-input']} value={board.writer} readOnly/>
                 </td>
               </tr>
               <tr>
@@ -51,7 +53,7 @@ const Read = ({ board, no, isLoading }) => {
               </tr>
               <tr>
                 <td colSpan={2}>
-                  <textarea cols="40" rows="10" value={board.content}></textarea>
+                  <textarea cols="40" className={styles['form-input']} rows="10" value={board.content}></textarea>
                 </td>
               </tr>
             </tbody>
