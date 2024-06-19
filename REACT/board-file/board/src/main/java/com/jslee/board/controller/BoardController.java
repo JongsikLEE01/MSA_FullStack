@@ -36,6 +36,9 @@ public class BoardController {
     @Autowired
     private FileService fileService;
 
+    /**
+     * 목록
+     */
     @GetMapping("")
     public ResponseEntity<?> getAll() {
         try {
@@ -46,6 +49,11 @@ public class BoardController {
         }
     }
     
+    /**
+     * 조회
+     * @param no
+     * @return
+     */
     @GetMapping("/{no}")
     public ResponseEntity<?> getOne(@PathVariable("no") int no) {
         try {
@@ -70,6 +78,11 @@ public class BoardController {
         }
     }
     
+    /**
+     * 등록
+     * @param board
+     * @return
+     */
     @PostMapping("")
     // public ResponseEntity<?> create(@RequestBody Board board) {  // Content-Type : application/json
     public ResponseEntity<?> create(Board board) {                  // Content-Type : multipart/form-data
@@ -85,8 +98,14 @@ public class BoardController {
         }
     }
     
+    /**
+     * 수정
+     * @param board
+     * @return
+     */
     @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody Board board) {
+    // public ResponseEntity<?> update(@RequestBody Board board) {
+    public ResponseEntity<?> update(Board board) {
         try {
             int result = boardService.update(board);
             if(result > 0)
@@ -98,6 +117,11 @@ public class BoardController {
         }
     }
     
+    /**
+     * 삭제
+     * @param no
+     * @return
+     */
     @DeleteMapping("/{no}")
     public ResponseEntity<?> destroy(@PathVariable("no") int no) {
         try {

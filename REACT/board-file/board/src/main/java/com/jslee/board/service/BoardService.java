@@ -10,4 +10,7 @@ public interface BoardService {
     public Board insert(Board board)throws Exception;
     public int update(Board board)throws Exception;
     public int delete(int no)throws Exception;
+
+    // upload 함수
+    public int upload(Board board)throws Exception;
 }

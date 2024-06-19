@@ -9,3 +9,6 @@ export const download = (no) => axios.get(`/files/${no}`, {responseType: 'blob'}
 
 // 파일 삭제
 export const remove = (no) => axios.delete(`/files/${no}`)
+
+// 파일 선택 삭제 요청
+export const removeFiles = (fileNos) => axios.delete(`/files?no=${fileNos}`)

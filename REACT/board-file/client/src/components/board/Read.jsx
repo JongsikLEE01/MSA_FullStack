@@ -4,6 +4,9 @@ import styles from '../board/css/read.module.css'
 import { formatDate } from '../../apis/format'
 import '../board/css/read.css'
 import * as format from '../../apis/format'
+// ckeditor5
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const Read = ({ board, no, fileList, isLoading, onDownload }) => {
 
@@ -59,7 +62,14 @@ const Read = ({ board, no, fileList, isLoading, onDownload }) => {
               </tr>
               <tr>
                 <td colSpan={2}>
-                  <textarea cols="40" className={styles['form-input']} rows="10" value={board.content}></textarea>
+                  {/* <textarea cols="40" className={styles['form-input']} rows="10" value={board.content}></textarea> */}
+                  <CKEditor editor={ ClassicEditor }
+                    data={ board.content }           // 조회할 데이터 커텐츠 
+                    disabled={true}
+                    config={{
+                        toolbar: [],
+                    }}
+                  />
                 </td>
               </tr>
               <tr>

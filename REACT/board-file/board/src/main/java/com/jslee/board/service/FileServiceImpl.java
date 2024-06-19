@@ -187,4 +187,22 @@ public class FileServiceImpl implements FileService{
         sos.close();
         return 1;
     }
+
+    @Override
+    public int deleteFiles(String no) throws Exception {
+        String[] noList = no.split(",");
+
+        int result = 0;
+        for (String deleteNo : noList) {
+            int fileNo = Integer.parseInt(deleteNo);
+            result += delete(fileNo);
+        }
+
+    return result;
+    }
+
+    @Override
+    public int deleteByParent(Files file) throws Exception {
+        return fileMapper.deleteByParent(file);
+    }
 }

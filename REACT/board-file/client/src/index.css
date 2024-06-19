@@ -3,18 +3,18 @@
 
 /* 📄 index.css */
 /* css 공통 초기화 */
-*{
+/* *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 body{
   font-family: 'Noto Sans', sans-serif;
   font-size: var(--font-size-main)
 }
-ul{
+/* ul{
   list-style: none;
-}
+} */
 a{
   text-decoration: none;
   color: #000;

@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../board/css/insert.module.css'
+// ckeditor5
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// files
+import * as filesApi from '../../apis/files'
 
 const InsertForm = ({ onInsert }) => {
 
@@ -67,6 +72,45 @@ const InsertForm = ({ onInsert }) => {
     onInsert(formData, headers)          // formData
   }
 
+  // uploadPlugin() 함수 정의
+  function uploadPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+        return customUploadAdapter(loader)
+    }
+  }
+
+  // customUploadAdapter() 함수 정의
+  const customUploadAdapter = (loader) => {
+    return {
+      upload() {
+        return new Promise( (resolve, reject) => {
+          const formData = new FormData()
+          loader.file.then( async (file) => {
+            console.log(file)
+            formData.append("parentTable", 'editor')
+            formData.append("file", file)
+
+            const headers = {
+              'Content-Type' : 'multipart/form-data',
+            }
+
+            let response = await filesApi.upload(formData, headers)
+            let data = await response.data
+            console.log(`data : ${data}`)
+            
+            let newFile = data
+            let newFileNo = newFile.no
+
+            // 이미지 렌더링
+            await resolve({
+                default: `http://localhost:8080/files/img/${newFileNo}`
+            })            
+          })
+        })
+      },
+    }
+  }
+
   return (
     <div className="container">
       <h1 className="title">게시글 등록</h1>
@@ -94,7 +138,53 @@ const InsertForm = ({ onInsert }) => {
           </tr>
           <tr>
             <td colSpan={2}>
-              <textarea cols="40" rows="10" className={styles['form-input']} value={content} onChange={handleChangeContent}></textarea>
+              {/* <textarea cols="40" rows="10" 
+                        className={styles['form-input']} 
+                        value={content} 
+                        onChange={handleChangeContent}
+                        ></textarea> */}
+              <CKEditor
+	              editor={ ClassicEditor }
+	              config={{
+	                  placeholder: "내용을 입력하세요.",
+	                  toolbar: {
+	                      items: [
+	                          'undo', 'redo',
+	                          '|', 'heading',
+	                          '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+	                          '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+	                          '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+	                          '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
+	                          '|', 'mediaEmbed',
+	                      ],
+	                      shouldNotGroupWhenFull: false
+	                  },
+	                  editorConfig: {
+	                      height: 500, // Set the desired height in pixels
+	                  },
+	                  alignment: {
+	                      options: ['left', 'center', 'right', 'justify'],
+	                  },
+                  
+	                  extraPlugins: [uploadPlugin]            // 업로드 플러그인
+	              }}
+	              data=""         // ⭐ 기존 컨텐츠 내용 입력 (HTML)
+	              onReady={ editor => {
+	                  // You can store the "editor" and use when it is needed.
+	                  console.log( 'Editor is ready to use!', editor );
+	              } }
+	              onChange={ ( event, editor ) => {
+	                  const data = editor.getData();
+	                  console.log( { event, editor, data } );
+	                  setContent(data);
+	              } }
+	              onBlur={ ( event, editor ) => {
+	                  console.log( 'Blur.', editor );
+	              } }
+	              onFocus={ ( event, editor ) => {
+	                  console.log( 'Focus.', editor );
+	              } }
+	              />
             </td>
           </tr>
           <tr>
