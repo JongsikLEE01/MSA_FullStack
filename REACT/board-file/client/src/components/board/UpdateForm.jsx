@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../board/css/update.module.css'
 import { formatDate } from '../../apis/format'
+import * as format from '../../apis/format'
 
-const UpdateForm = ({ no, board, onUpdate, onRemove, isLoading }) => {
+const UpdateForm = ({ no, board, fileList, onUpdate
+                    , onRemove, isLoading, onDownload
+                    , onDeleteFile }) => {
+
   // state 등록
-  // const [title, setTitle] = useState(board.title)
-  // const [writer, setWriter] = useState(board.writer)
-  // const [content, setContent] = useState(board.content)
-
   // 랜더링 될때 넣기 -> Line 47
   const [title, setTitle] = useState('')
   const [writer, setWriter] = useState('')
@@ -70,13 +70,24 @@ const UpdateForm = ({ no, board, onUpdate, onRemove, isLoading }) => {
     // document 객체를 통해 DOM을 조작하는 방식으로 웹 페이지를 동적으로 제어
     let check = window.confirm('정말 삭제하시겠습니까?') 
     if(!check){
-      alert('삭제가 취소되었습니다.')
       return
     }
     else
       onRemove(no)  
   }
 
+  // 파일 다운로드
+  const handleDownload = (no, fileName) =>{
+    // 중간 처리 가능
+    onDownload(no, fileName)
+  }
+
+  // 파일 삭제
+  const handleDeleteFile = (no) =>{
+    const check = window.confirm("정말로 삭제하시겠습니까?")
+    if(check)
+      onDeleteFile(no)
+  }
 
   return (
     <div className="contrainer">
@@ -125,6 +136,30 @@ const UpdateForm = ({ no, board, onUpdate, onRemove, isLoading }) => {
               <tr>
                 <td colSpan={2}>
                   <textarea cols="50" className={styles['form-input']} rows="10" value={content} onChange={handleChangeContent}></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>파일</td>
+              </tr>
+              <tr>
+                <td>
+                  {/* 파일 선택 */}
+                  <input type="checkbox" />
+                </td>
+                <td>
+                  { fileList.map( (file) => (
+                      <div className='flex-box' key={file.no}>
+                        <div className="item">
+                          <img src={`/files/img/${file.no}`} alt={file.fileName} />
+                          <span>{file.originName} ({format.byteToUnit(file.fileSize)})</span>
+                        </div>
+
+                        <div className="item">
+                          <button className='btn' onClick={() => handleDownload(file.no, file.originName)}>다운로드</button>
+                          <button className="btn" onClick={() => handleDeleteFile(file.no) }>삭제</button>
+                        </div>
+                      </div>
+                  ))}
                 </td>
               </tr>
             </tbody>

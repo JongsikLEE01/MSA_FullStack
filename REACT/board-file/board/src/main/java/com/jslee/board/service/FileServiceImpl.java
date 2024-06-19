@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.tomcat.util.http.fileupload.FileItemStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -54,13 +53,33 @@ public class FileServiceImpl implements FileService{
 
     @Override
     public int delete(int no) throws Exception {
-        return fileMapper.delete(no);
+        // 1. 파일 정보 조회
+        Files file = fileMapper.select(no);
+        
+        // 2. 파일 경로로 파일 객체 접근
+        String filePath = file.getFilePath();
+        File deleteFile = new File(filePath);
+
+        // 3. 파일시스템의 파일 삭제
+        //  - 파일 존재 여부 확인
+        if(!deleteFile.exists()) return 0;
+        //  - 파일 삭제
+        boolean deleted = deleteFile.delete();
+
+        int result = 0;
+        // 4. DB의 파일 삭제
+        if(deleted){
+            result = fileMapper.delete(no);
+            return result;
+        }
+        return result;
     }
 
     @Override
     public Files upload(Files file) throws Exception {
         Files uploadedFile = uploadFile(file, file.getFile());
-        if (uploadedFile != null)   log.info("파일 업로드 성공");
+        if (uploadedFile != null)   
+            log.info("파일 업로드 성공");
 
         return uploadedFile;
     }

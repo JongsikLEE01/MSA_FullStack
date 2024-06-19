@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import styles from '../board/css/read.module.css'
 import { formatDate } from '../../apis/format'
 import '../board/css/read.css'
+import * as format from '../../apis/format'
 
 const Read = ({ board, no, fileList, isLoading, onDownload }) => {
 
   const handleDownload = (no, fileName) =>{
     // 중간 처리 가능
-
     onDownload(no, fileName)
   }
   
@@ -70,7 +70,8 @@ const Read = ({ board, no, fileList, isLoading, onDownload }) => {
                   { fileList.map( (file) => (
                       <div className='flex-box' key={file.no}>
                         <div className="item">
-                          <span>{file.originName}</span>
+                          <img src={`/files/img/${file.no}`} alt={file.fileName} />
+                          <span>{file.originName} ({format.byteToUnit(file.fileSize)})</span>
                         </div>
 
                         <div className="item">
