@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import api from '../apis/api'
 import * as auth from '../apis/auth'
+import * as Swal from '../apis/alert'
 
 // Context 생성
 export const LoginContext = createContext()
@@ -67,17 +68,17 @@ const LoginContextProvider = ({ children }) => {
 
   // 로그인
   const login = async (username, password) => {
-    console.log(`username? ${username}`)
-    console.log(`password? ${password}`)
+    console.log(`login-username? ${username}`)
+    console.log(`login-password? ${password}`)
 
     try {
       const response = await auth.login(username, password)
       const data = response.data
       const status = response.status
       const headers = response.headers
-      const authorizaion = headers.authorizaion
+      const authorization = headers.authorization
       // accessToken : JWT
-      const accessToken = authorizaion.replace('Bearer ', '')
+      const accessToken = authorization.replace("Bearer ", "")
 
       console.log(`data : ${data}`);
       console.log(`status : ${status}`);
@@ -91,11 +92,15 @@ const LoginContextProvider = ({ children }) => {
         // 로그인 체크
         loginCheck()
 
-        // 메인 페이지로 이동
-        navigate('/')
+        // alert
+        Swal.alert("로그인 성공", "메인 화면으로 이동합니다","success", (
+          () => {navigate("/")}
+        ))
       }
     } catch (e) {
       console.log(`로그인 실패...`);
+      // alert
+      Swal.alert("로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다","error")
     }
   }
 
@@ -143,9 +148,39 @@ const LoginContextProvider = ({ children }) => {
     setRoles(null)
   }
 
+  // 로그아웃
+  const logout = () => {
+    // const check = window.confirm("정말 로그아웃 하시겠습니까?")
+    // if (check) {
+    //   // 로그아웃 세팅 호출
+    //   logoutSetting()
+    // }
+
+    Swal.confirm("로그아웃하시겠습니까?", "로그아웃을 진행합니다", "warning",
+      (result) => {
+        // isConfirmed : 확인 버튼 클릭 여부
+        if(result.isConfirmed){
+          Swal.alert("로그아웃 성공","success")
+          // 로그아웃 세팅 호출
+          logoutSetting()
+          navigate("/")
+        }
+      }
+    )
+  }
+
+  // Mount / Update
+  useEffect(()=>{
+    // 로그인 체크
+    loginCheck()
+    // 1. 쿠키에서 JWT를 꺼내기
+    // 2. JWT가 있으면 서버에 사용자 정보 받아옴
+    // 3. 로그인 세팅 (Context의 로그인 여부, 사용자 정보, 권한 정보 등록)
+  }, [])
+
   return (
     // 컨텍스트 값 지정 -> value={ ?, ? }
-    <LoginContext.Provider value={{isLogin}}>
+    <LoginContext.Provider value={{ isLogin, login,logout }}>
       { children }
     </LoginContext.Provider>
   )
